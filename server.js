@@ -3,6 +3,7 @@ var express = require('express'),
   port = process.env.PORT || 3000;
   mongoose = require('mongoose'),
   Organization = require('./api/models/organizationModel'), //created model loading here
+  Dimension = require('./api/models/dimensionModel'), //created model loading here
   bodyParser = require('body-parser'),
   fs = require('fs');
 
@@ -20,6 +21,9 @@ app.use(bodyParser.json());
 
 
 var routes = require('./api/routes/organizationRoutes'); //importing route
+routes(app); //register the route
+
+var routes = require('./api/routes/dimensionRoutes'); //importing route
 routes(app); //register the route
 
 
