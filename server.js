@@ -4,7 +4,7 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Organization = require('./api/models/organizationModel'), //created model loading here
   Dimension = require('./api/models/dimensionModel'), //created model loading here
-  Criteria = require('./api/models/CriteriaModel')
+  Criteria = require('./api/models/criteriaModel')
   bodyParser = require('body-parser'),
   fs = require('fs');
 
