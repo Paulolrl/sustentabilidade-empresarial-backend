@@ -5,5 +5,10 @@ module.exports = function(app) {
   app.route('/criteria')
     .post(criteria.add)
     .get(criteria.listAll)
-    .delete(criteria.deleteAll)
+    .delete(criteria.deleteAll);
+  
+  app.route('/criteria/:criteriaId')
+    .get(criteria.get)
+    .put(criteria.update)
+    .delete(criteria.delete);
 };
