@@ -6,11 +6,8 @@ module.exports = (req, res, next) => {
 
     admin.auth().verifyIdToken(token)
     .then(function (decodedToken) {
-        if(decodedToken.uid === user.uid)
-        {
-            req.user = user.uid
-            return next()
-        }
+        req.uid = user.uid
+        return next()
     }).catch(function (error) {
         res.send(error)
     });
