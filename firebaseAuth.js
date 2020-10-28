@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 
     admin.auth().verifyIdToken(token)
     .then(function (decodedToken) {
-        req.uid = user.uid
+        req.uid = decodedToken.uid
         return next()
     }).catch(function (error) {
         res.send(error)
