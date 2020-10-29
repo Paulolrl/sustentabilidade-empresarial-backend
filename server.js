@@ -4,6 +4,7 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Organization = require('./api/models/organizationModel'), //created model loading here
   Dimension = require('./api/models/dimensionModel'), //created model loading here
+  Indicator = require('./api/models/indicatorModel')
   bodyParser = require('body-parser'),
   fs = require('fs');
 
@@ -26,6 +27,8 @@ routes(app); //register the route
 var routes = require('./api/routes/dimensionRoutes'); //importing route
 routes(app); //register the route
 
+var routes = require('./api/routes/indicatorRoutes'); //importing route
+routes(app); //register the route
 
 app.listen(port);
 
