@@ -4,11 +4,8 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Organization = require('./api/models/organizationModel'), //created model loading here
   Dimension = require('./api/models/dimensionModel'), //created model loading here
-<<<<<<< HEAD
   User = require('./api/models/userModel'), //created model loading here
-=======
   Criteria = require('./api/models/criteriaModel')
->>>>>>> 5316a8b8d187d7407ae2e1b39ad6fc4ad8dc35e2
   bodyParser = require('body-parser'),
   fs = require('fs');
 
@@ -30,11 +27,8 @@ routes(app); //register the route
 var routes = require('./api/routes/dimensionRoutes'); //importing route
 routes(app); //register the route
 
-<<<<<<< HEAD
 var routes = require('./api/routes/userRoutes'); //importing route
-=======
 var routes = require('./api/routes/criteriaRoutes'); //importing route
->>>>>>> 5316a8b8d187d7407ae2e1b39ad6fc4ad8dc35e2
 routes(app); //register the route
 
 app.listen(port);
