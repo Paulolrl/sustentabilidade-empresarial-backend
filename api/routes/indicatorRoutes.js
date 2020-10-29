@@ -1,14 +1,14 @@
 'use strict';
 module.exports = function(app) {
-  var criteria = require('../controllers/indicatorController');
+  var indicator = require('../controllers/indicatorController');
 
   app.route('/indicator')
-    .post(criteria.add)
-    .get(criteria.listAll)
-    .delete(criteria.deleteAll);
+    .post(indicator.add)
+    .get(indicator.listAll)
+    .delete(indicator.deleteAll);
   
   app.route('/indicator/:indicatorId')
-    .get(criteria.get)
-    .put(criteria.update)
-    .delete(criteria.delete);
+    .get(indicator.get)
+    .put(indicator.update)
+    .delete(indicator.delete);
 };
