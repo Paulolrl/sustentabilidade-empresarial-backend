@@ -4,5 +4,11 @@ module.exports = function(app) {
 
   // todoList Routes
   app.route('/organizations')
-    .get(organizations.teste)
+    .get(organizations.listAll)
+    .post(organizations.create)
+
+  app.route('/organizations/:orgId')
+    .get(organizations.get)
+    .put(organizations.update)
+    .delete(organizations.delete);
 };
