@@ -2,8 +2,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-
-var DimensionsSchema = new Schema(
+var DimensionSchema = new Schema(
   {
     name: {
       type: String,
@@ -15,8 +14,8 @@ var DimensionsSchema = new Schema(
     }
   },
   {
-    collection : 'Dimensions'
+    collection : 'Dimension'
   }
 );
 
-module.exports = mongoose.model('Dimensions', DimensionsSchema);
+module.exports = mongoose.model('Dimension', DimensionSchema);
