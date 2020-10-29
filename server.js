@@ -13,8 +13,7 @@ let config = JSON.parse(rawdata);
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb+srv://admin:'+ config.password +'@cluster0.vtpq8.mongodb.net/Sustentabilidade?retryWrites=true&w=majority');
-
+mongoose.connect('mongodb+srv://admin:' + config.password + '@cluster0.ru7w6.mongodb.net/Sustentabilidade?retryWrites=true&w=majority');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
