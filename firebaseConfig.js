@@ -1,7 +1,7 @@
 require("firebase/auth");
 const firebase = require('firebase')
 const admin = require('firebase-admin')
-const serviceAccount = require("./sustentabilidade-empresarial-firebase-adminsdk-rwv7o-cc09cc6d4b.json");
+const serviceAccount = require("./sustentabilidade-empresarial-firebase-adminsdk.json");
 
 var firebaseConfig = {
   apiKey: "AIzaSyBcxEmCjr9ZZ8Ok-0Vvw5BoHR4AIAa84Go",
