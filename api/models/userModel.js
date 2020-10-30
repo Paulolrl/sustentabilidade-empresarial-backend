@@ -14,9 +14,15 @@ const UserSchema = new Schema(
       required: true
     },
     email: {
-        type: String,
-        required: true
-      },
+      type: String,
+      required: true
+    },
+    // Firebase ID.
+    uid: {
+      type: String,
+      required: true
+    },
+    isAdmin: Boolean
   }
 );
 
