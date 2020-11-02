@@ -4,7 +4,8 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Organization = require('./api/models/organizationModel'), //created model loading here
   Dimension = require('./api/models/dimensionModel'), //created model loading here
-  Criteria = require('./api/models/criteriaModel')
+  Criteria = require('./api/models/criteriaModel'),
+  Indicator = require('./api/models/indicatorModel'),
   bodyParser = require('body-parser'),
   fs = require('fs'),
   swaggerJsdoc = require('swagger-jsdoc'),
@@ -30,6 +31,9 @@ var routes = require('./api/routes/dimensionRoutes'); //importing route
 routes(app); //register the route
 
 var routes = require('./api/routes/criteriaRoutes'); //importing route
+routes(app); //register the route
+
+var routes = require('./api/routes/indicatorRoutes'); //importing route
 routes(app); //register the route
 
 const specs = swaggerJsdoc(swagger_options);
