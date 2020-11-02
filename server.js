@@ -6,7 +6,10 @@ var express = require('express'),
   Dimension = require('./api/models/dimensionModel'), //created model loading here
   Criteria = require('./api/models/criteriaModel')
   bodyParser = require('body-parser'),
-  fs = require('fs');
+  fs = require('fs'),
+  swaggerJsdoc = require('swagger-jsdoc'),
+  swaggerUi = require('swagger-ui-express')
+  swagger_options = require('./swagger_options');
 
 
 let rawdata = fs.readFileSync('config.json');
@@ -28,6 +31,9 @@ routes(app); //register the route
 
 var routes = require('./api/routes/criteriaRoutes'); //importing route
 routes(app); //register the route
+
+const specs = swaggerJsdoc(swagger_options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.listen(port);
 
