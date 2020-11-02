@@ -2,6 +2,33 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Dimension:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         year:
+ *           type: number
+ * 
+ *   DimensionMongo:
+ *     allOf:
+ *       - $ref: '#/components/schemas/Dimension'
+ *       - type: object
+ *         properties:
+ *           _id:
+ *             type: string
+ *           __v:
+ *             type: number
+ * 
+ *   ListOfDimensions:
+ *     type: array
+ *     items:
+ *       $ref: '#/components/DimensionMongo'
+ */
 var DimensionSchema = new Schema(
   {
     name: {
