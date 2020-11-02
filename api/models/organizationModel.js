@@ -2,7 +2,41 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Organization:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         address:
+ *           type: object
+ *         phone:
+ *           type: integer
+ *         site:
+ *           type: string
+ *         category:
+ *           type: string
+ *         sector:
+ *           type: string
+ * 
+ *   OrganizationMongo:
+ *     allOf:
+ *       - $ref: '#/components/schemas/Organization'
+ *       - type: object
+ *         properties:
+ *           _id:
+ *             type: string
+ *           __v:
+ *             type: number
+ *       
+ *   ListOfOrgs:
+ *     type: array
+ *     items:
+ *       $ref: '#/components/OrganizationMongo'
+ */
 var OrganizationsSchema = new Schema(
   {
     name: {
@@ -27,7 +61,7 @@ var OrganizationsSchema = new Schema(
     }
   },
   {
-    collection : 'Organizations'
+    collection: 'Organizations'
   }
 );
 
