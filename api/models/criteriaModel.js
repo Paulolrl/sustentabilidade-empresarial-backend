@@ -2,20 +2,20 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var DimensionSchema = new Schema(
+var CriteriaSchema = new Schema(
   {
     name: {
       type: String,
       required: true
     },
-    year: {
+    weight: {
       type: Number,
       required: true
     }
   },
   {
-    collection : 'Dimension'
+    collection : 'Criteria'
   }
 );
 
-module.exports = mongoose.model('Dimension', DimensionSchema);
+module.exports = mongoose.model('Criteria', CriteriaSchema);
