@@ -11,6 +11,11 @@ var IndicatorSchema = new Schema(
     number: {
       type: Number,
       required: true
+    },
+    criteriaId: {
+      type: ObjectId,
+      required: true,
+      index: true
     }
   },
   {

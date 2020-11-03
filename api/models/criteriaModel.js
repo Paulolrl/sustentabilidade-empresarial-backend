@@ -11,6 +11,11 @@ var CriteriaSchema = new Schema(
     weight: {
       type: Number,
       required: true
+    },
+    dimensionId: {
+      type: ObjectId,
+      required: true,
+      index: true
     }
   },
   {
