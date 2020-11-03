@@ -2,7 +2,6 @@ const { firebase, admin } = require('./firebaseConfig');
 
 module.exports = (req, res, next) => {
     const token = req.header('Authorization').replace('Bearer', '').trim()
-    console.log('token', token);
 
     admin.auth().verifyIdToken(token)
     .then(function (decodedToken) {
