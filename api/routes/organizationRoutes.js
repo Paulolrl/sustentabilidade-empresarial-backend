@@ -1,10 +1,11 @@
 'use strict';
 module.exports = function(app) {
   var organizations = require('../controllers/organizationController');
+  var fbAuth = require('../../firebaseAuth');
 
   // todoList Routes
   app.route('/organizations')
-    .get(organizations.listAll)
+    .get(fbAuth, organizations.listAll)
     .post(organizations.create)
 
   app.route('/organizations/:orgId')

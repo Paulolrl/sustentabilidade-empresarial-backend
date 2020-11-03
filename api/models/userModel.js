@@ -20,7 +20,8 @@ const UserSchema = new Schema(
     // Firebase ID.
     uid: {
       type: String,
-      required: true
+      required: true,
+      index: true
     },
     isAdmin: Boolean
   }
