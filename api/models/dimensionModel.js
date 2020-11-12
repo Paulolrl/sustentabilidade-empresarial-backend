@@ -8,6 +8,14 @@ var DimensionSchema = new Schema(
       type: String,
       required: true
     },
+    code: {
+      type: Number,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
     year: {
       type: Number,
       required: true
