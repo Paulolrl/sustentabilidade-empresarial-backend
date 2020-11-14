@@ -2,13 +2,16 @@
 module.exports = function(app) {
   var indicator = require('../controllers/indicatorController');
 
-  app.route('/indicator')
+  app.route('/dimension/:dimensionId/criteria/:criteriaId/indicator')
     .post(indicator.add)
     .get(indicator.listAll)
     .delete(indicator.deleteAll);
-  
-  app.route('/indicator/:indicatorId')
+
+  app.route('/dimension/:dimensionId/criteria/:criteriaId/indicator/:indicatorId')
     .get(indicator.get)
     .put(indicator.update)
     .delete(indicator.delete);
+
+  app.route('/indicator/:indicatorId')
+    .get(indicator.get)
 };

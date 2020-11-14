@@ -6,7 +6,7 @@ module.exports = function(app) {
   // todoList Routes
   app.route('/organizations')
     .get(fbAuth, organizations.listAll)
-    .post(organizations.create)
+    .post(fbAuth, organizations.create)
 
   app.route('/organizations/:orgId')
     .get(organizations.get)

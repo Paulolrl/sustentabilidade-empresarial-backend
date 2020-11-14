@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
   Indicator = mongoose.model('Indicator');
 
 exports.add = function(req, res) {
+  req.body.criteriaId = req.params.criteriaId;
   const newIndicator = new Indicator(req.body);
   newIndicator.save(function(err, indicator) {
     if (err) {
@@ -15,6 +16,7 @@ exports.add = function(req, res) {
 };
 
 exports.update = function(req, res) {
+  req.body.criteriaId = req.params.criteriaId;
   Indicator.findByIdAndUpdate(req.params.indicatorId, req.body, function(err, indicator) {
     if (err) {
       res.send(err);
@@ -37,7 +39,7 @@ exports.get = function(req, res) {
 };
 
 exports.listAll = function(req, res) {
-  Indicator.find({}, function(err, indicator) {
+  Indicator.find({criteriaId: req.params.criteriaId}, function(err, indicator) {
     if (err) {
       res.send(err);
     } else {
@@ -60,7 +62,7 @@ exports.delete = function(req, res) {
 
 // TODO: remove this before production
 exports.deleteAll = function(req, res) {
-  Indicator.deleteMany({}, function(err, indicator) {
+  Indicator.deleteMany({criteriaId: req.params.criteriaId}, function(err, indicator) {
     if (err) {
       res.send(err);
     } else {
