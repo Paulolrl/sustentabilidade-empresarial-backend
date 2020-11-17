@@ -37,10 +37,11 @@ exports.get = function(req, res) {
 
 
 exports.update = function(req, res) {
-  Organization.findOneAndUpdate({_id: req.params.orgId}, req.body, {new: true}, function(err, organization) {
+  Organization.findOneAndUpdate({_id: req.params.orgId}, {$set: req.body}, function(err, organization) {
     if (err)
       res.send(err);
-    res.json(organization);
+    else
+      res.send({...organization._doc, ...req.body});
   });
 };
 
