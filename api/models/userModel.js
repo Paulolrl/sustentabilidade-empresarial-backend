@@ -21,7 +21,8 @@ const UserSchema = new Schema(
     uid: {
       type: String,
       required: true,
-      index: true
+      index: true,
+      unique: true
     },
     isAdmin: Boolean
   }

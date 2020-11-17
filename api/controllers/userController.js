@@ -4,6 +4,8 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
 exports.add = function(req, res) {
+  req.body.uid = req.uid;
+  req.body.isAdmin = false;
   const newUser = new User(req.body);
   newUser.save(function(err, user) {
     if (err) {
@@ -15,19 +17,19 @@ exports.add = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  User.findByIdAndUpdate(req.params.userId, req.body, function(err, user) {
+  User.findOneAndUpdate({uid: req.uid}, req.body, function(err, user) {
     if (err) {
       res.send(err);
     } else if (!user) {
       res.status(404).send("User not found!");
     } else {
-      res.send("User matching the ID was modified!");
+      res.send(user);
     }
   });
 };
 
 exports.get = function(req, res) {
-  User.findById(req.params.userId, function(err, user) {
+  User.findOne({uid: req.uid}, function(err, user) {
     if (err) {
       res.send(err);
     } else {
@@ -47,7 +49,7 @@ exports.listAll = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  User.findByIdAndDelete(req.params.userId, function(err, user) {
+  User.findOneAndDelete({uid: req.uid}, function(err, user) {
     if (err) {
       res.send(err);
     } else if (!user) {
