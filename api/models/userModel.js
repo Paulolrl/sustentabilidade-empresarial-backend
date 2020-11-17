@@ -24,6 +24,9 @@ const UserSchema = new Schema(
       index: true,
       unique: true
     },
+    orgId: {
+      type: Schema.Types.ObjectId
+    },
     isAdmin: Boolean
   }
 );

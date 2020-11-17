@@ -18,13 +18,13 @@ exports.add = function(req, res) {
 
 exports.update = function(req, res) {
   req.body.uid = req.uid;
-  User.findOneAndUpdate({uid: req.uid}, req.body, function(err, user) {
+  User.findOneAndUpdate({uid: req.uid}, {$set: req.body}, function(err, user) {
     if (err) {
       res.send(err);
     } else if (!user) {
       res.status(404).send("User not found!");
     } else {
-      res.send(req.body);
+      res.send({...user._doc, ...req.body});
     }
   });
 };
@@ -68,6 +68,14 @@ exports.deleteAll = function(req, res) {
       res.send(err);
     } else {
       res.send("All user deleted!");
+    }
+  });
+};
+
+exports.setOrgId = function(uid, orgId) {
+  User.findOneAndUpdate({uid}, {$set: {orgId}}, function(err, user) {
+    if (err) {
+      console.log(err);
     }
   });
 };
