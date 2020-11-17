@@ -13,7 +13,7 @@ var CriteriaSchema = new Schema(
       required: true
     },
     dimensionId: {
-      type: ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       index: true
     }

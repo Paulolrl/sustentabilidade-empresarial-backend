@@ -13,7 +13,7 @@ var IndicatorSchema = new Schema(
       required: true
     },
     criteriaId: {
-      type: ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       index: true
     }
