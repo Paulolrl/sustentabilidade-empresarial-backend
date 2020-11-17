@@ -51,7 +51,7 @@ var IndicatorSchema = new Schema(
       required: 'Enter indicator weight'
     },
     criteriaId: {
-      type: Object, //Testei trocando isso pra number, depois precisa fazer um teste com o object
+      type: Schema.Types.ObjectId,
       required: true,
       index: true
     },
