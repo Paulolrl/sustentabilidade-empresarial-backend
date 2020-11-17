@@ -17,13 +17,14 @@ exports.add = function(req, res) {
 };
 
 exports.update = function(req, res) {
+  req.body.uid = req.uid;
   User.findOneAndUpdate({uid: req.uid}, req.body, function(err, user) {
     if (err) {
       res.send(err);
     } else if (!user) {
       res.status(404).send("User not found!");
     } else {
-      res.send(user);
+      res.send(req.body);
     }
   });
 };
