@@ -4,12 +4,12 @@ module.exports = function(app) {
   var fbAuth = require('../../firebaseAuth');
 
   // todoList Routes
-  app.route('/organizations')
+  app.route('/organization')
     .get(fbAuth, organizations.listAll)
-    .post(fbAuth, organizations.create)
+    .post(fbAuth, organizations.add)
 
-  app.route('/organizations/:orgId')
-    .get(organizations.get)
-    .put(organizations.update)
-    .delete(organizations.delete);
+  app.route('/organization/:orgId')
+    .get(fbAuth, organizations.get)
+    .put(fbAuth, organizations.update)
+    .delete(fbAuth, organizations.delete);
 };

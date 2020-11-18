@@ -12,14 +12,20 @@
 					"name": "organizations GET all",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{host}}/organizations",
+							"raw": "{{host}}/organization",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"organizations"
+								"organization"
 							]
 						}
 					},
@@ -37,19 +43,24 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Paulo co\",\n    \"category\": \"COMPANY\",\n    \"phone\": \"199382931\"\n}"
+							"raw": "{\n    \"name\": \"Paulo Company 6\",\n    \"address\": { \"address\": \"Rua oscar\" },\n    \"phone\": \"38298329832\",\n    \"site\": \"www.com.br\",\n    \"category\": \"COMPANY\",\n    \"sector\": \"SEILA\"\n}"
 						},
 						"url": {
-							"raw": "{{host}}/organizations",
+							"raw": "{{host}}/organization",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"organizations"
+								"organization"
 							]
 						}
 					},
@@ -68,6 +79,11 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -75,13 +91,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/organizations/5f998d2bfe857279fda03155",
+							"raw": "{{host}}/organization/5fb430ae1c133a390f6f3a75",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"organizations",
-								"5f998d2bfe857279fda03155"
+								"organization",
+								"5fb430ae1c133a390f6f3a75"
 							]
 						}
 					},
@@ -99,20 +115,25 @@
 								"key": "Content-Type",
 								"type": "text",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Paulo co Editado\",\n    \"category\": \"COMPANY\",\n    \"phone\": \"199382931\"\n}"
+							"raw": "{\n    \"name\": \"Paulo co Editado 2\"\n}"
 						},
 						"url": {
-							"raw": "{{host}}/organizations/5f998d2bfe857279fda03155",
+							"raw": "{{host}}/organization/5fb430ae1c133a390f6f3a75",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"organizations",
-								"5f998d2bfe857279fda03155"
+								"organization",
+								"5fb430ae1c133a390f6f3a75"
 							]
 						}
 					},
@@ -124,13 +145,160 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/organizations/5f85c184a846e589079c1690",
+							"raw": "{{host}}/organization/5f85c184a846e589079c1690",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"organizations",
+								"organization",
 								"5f85c184a846e589079c1690"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User CREATE",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Paulo Lucas\",\n    \"lastName\": \"Rodrigues\",\n    \"email\": \"paulo.lucas.014@gmail.com\",\n    \"phone\": \"199382931\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User get me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User update me",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Paulo Teste Edição 20\",\n    \"lastName\": \"Confirmando edição\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User delete me",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/user/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"me"
 							]
 						}
 					},
