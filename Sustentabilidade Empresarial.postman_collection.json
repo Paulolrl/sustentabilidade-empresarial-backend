@@ -9,29 +9,6 @@
 			"name": "Organizations",
 			"item": [
 				{
-					"name": "organizations GET all",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/organization",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"organization"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "organization CREATE",
 					"protocolProfileBehavior": {
 						"disabledSystemHeaders": {}
@@ -91,13 +68,133 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{host}}/organization/5fb430ae1c133a390f6f3a75",
+							"raw": "{{host}}/organization/mine",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"organization",
-								"5fb430ae1c133a390f6f3a75"
+								"mine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "organization UPDATE",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Paulo co Editado 4\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/organization/mine",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization",
+								"mine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "organization DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/organization/mine",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization",
+								"mine"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Organizations Admin",
+			"item": [
+				{
+					"name": "organizations GET all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/organization",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "organization GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/organization/5fa05891ab3c052a7088103e",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"organization",
+								"5fa05891ab3c052a7088103e"
 							]
 						}
 					},
@@ -127,13 +224,13 @@
 							"raw": "{\n    \"name\": \"Paulo co Editado 2\"\n}"
 						},
 						"url": {
-							"raw": "{{host}}/organization/5fb430ae1c133a390f6f3a75",
+							"raw": "{{host}}/organization/5fa05891ab3c052a7088103e",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"organization",
-								"5fb430ae1c133a390f6f3a75"
+								"5fa05891ab3c052a7088103e"
 							]
 						}
 					},
@@ -143,7 +240,13 @@
 					"name": "organization DELETE",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{host}}/organization/5f85c184a846e589079c1690",
 							"host": [
@@ -282,6 +385,154 @@
 				},
 				{
 					"name": "User delete me",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/user/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User Admin",
+			"item": [
+				{
+					"name": "User get all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/5fb5868753c19e3e7cb07ed6",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"5fb5868753c19e3e7cb07ed6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User update",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Jesus\"\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user/5fb5868753c19e3e7cb07ed6",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user",
+								"5fb5868753c19e3e7cb07ed6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User delete",
 					"request": {
 						"method": "DELETE",
 						"header": [
