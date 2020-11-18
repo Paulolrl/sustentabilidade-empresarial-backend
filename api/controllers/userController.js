@@ -3,6 +3,15 @@
 var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
+async function findByUid(uid){
+  let user = await User.findOne({uid});
+  return user;
+}
+
+exports.getByUid = async function(uid){
+  return await findByUid(uid);
+}
+
 exports.add = function(req, res) {
   req.body.uid = req.uid;
   req.body.isAdmin = false;
@@ -16,7 +25,7 @@ exports.add = function(req, res) {
   });
 };
 
-exports.update = function(req, res) {
+exports.updateMe = function(req, res) {
   req.body.uid = req.uid;
   User.findOneAndUpdate({uid: req.uid}, {$set: req.body}, function(err, user) {
     if (err) {
@@ -29,8 +38,24 @@ exports.update = function(req, res) {
   });
 };
 
-exports.get = function(req, res) {
-  User.findOne({uid: req.uid}, function(err, user) {
+exports.update = function(req, res) {
+  User.findByIdAndUpdate(req.params.userId, {$set: req.body}, function(err, user) {
+    if (err) {
+      res.send(err);
+    } else if (!user) {
+      res.status(404).send("User not found!");
+    } else {
+      res.send({...user._doc, ...req.body});
+    }
+  });
+};
+
+exports.getMe = async function(req, res) {
+  res.json(req.user);
+};
+
+exports.get = async function(req, res) {
+  User.findById(req.params.userId, function(err, user) {
     if (err) {
       res.send(err);
     } else {
@@ -49,8 +74,20 @@ exports.listAll = function(req, res) {
   });
 };
 
-exports.delete = function(req, res) {
+exports.deleteMe = function(req, res) {
   User.findOneAndDelete({uid: req.uid}, function(err, user) {
+    if (err) {
+      res.send(err);
+    } else if (!user) {
+      res.status(404).send("User not found!");
+    } else {
+      res.send("User matching the ID was deleted!");
+    }
+  });
+};
+
+exports.delete = function(req, res) {
+  User.findByIdAndDelete(req.params.userId, function(err, user) {
     if (err) {
       res.send(err);
     } else if (!user) {
