@@ -1,0 +1,201 @@
+<html>
+  <head>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+
+
+
+
+
+
+  <body>
+      <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+      <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+      <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-app.js"></script>
+
+      <!-- Add Firebase products that you want to use -->
+      <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-database.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-storage.js"></script>
+
+
+
+      <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyBcxEmCjr9ZZ8Ok-0Vvw5BoHR4AIAa84Go",
+          authDomain: "sustentabilidade-empresarial.firebaseapp.com",
+          databaseURL: "https://sustentabilidade-empresarial.firebaseio.com",
+          projectId: "sustentabilidade-empresarial",
+          storageBucket: "sustentabilidade-empresarial.appspot.com",
+          messagingSenderId: "782236114999",
+          appId: "1:782236114999:web:49b8d073d4559d9d9fdfb2",
+          measurementId: "G-HV4HTBHNBF"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        function login(email, password) {
+          firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ...
+          });
+        }
+
+        function createUser(email, password) {
+
+          firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ...
+          });
+        }
+
+        function getToken() {
+          firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+            // Send token to your backend via HTTPS
+            // ...
+            console.log(idToken);
+            return idToken;
+          }).catch(function(error) {
+            // Handle error
+          });
+        }
+
+        function currentToken() {
+          token = firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
+            // Send token to your backend via HTTPS
+            // ...
+            console.log(idToken);
+
+            getClaims();
+            return idToken;
+          }).catch(function(error) {
+            // Handle error
+          });
+        }
+
+
+        function getClaims() {
+          firebase.auth().currentUser.getIdTokenResult().then((idTokenResult) => {
+
+            console.log(idTokenResult.claims);
+
+          });
+        }
+
+        function download() {
+          var storage = firebase.storage();
+         // var uid = firebase.auth().currentUser.uid;
+          var path = 'user/PDaZeYUcgbQmUrhK8NfRW6RZZr93/certificate/certificado_001.jpg'; //'user/'+uid+"/document/cnh_front.jpg";
+          var pathReference = storage.ref(path);
+
+
+
+
+
+          pathReference.getDownloadURL().then(function(url) {
+
+
+          // Or inserted into an <img> element:
+          var img = document.getElementById('myimg');
+          img.src = url;
+        }).catch(function(error) {
+          console.log(error);
+        });
+
+
+
+        }
+
+
+
+
+
+
+
+        function uploadFile(file) {
+          var uid = firebase.auth().currentUser.uid;
+
+          // Cria referencia
+          var storageRef = firebase.storage().ref();
+
+          // define caminho da referencia
+          var fileRef = storageRef.child('user/'+uid+"/certificate/certificado_001.jpg");
+
+          // inicia upload
+          fileRef.put(file).then(function(snapshot) {
+            console.log('Uploaded a blob or file!');
+          });
+
+        }
+
+
+
+        function doLogin() {
+          email = $("#txEmail").val();
+          pwd = $("#txPassword").val();
+          console.log("email: "+ email+ " | password: "+ pwd);
+          login(email, pwd);
+        }
+
+        function doCreate() {
+          email = $("#txEmail").val();
+          pwd = $("#txPassword").val();
+          console.log("email: "+ email+ " | password: "+ pwd);
+          createUser(email, pwd);
+        }
+
+        function doUpload() {
+          file = $("#inImage").prop('files')[0];
+          console.log(file);
+          uploadFile(file);
+        }
+
+        $(function(){
+          $("#btLogin").click(() => {doLogin()});
+          $("#btToken").click(() => {
+            currentToken();
+          });
+          $("#btCreate").click(() => {doCreate()});
+          $("#btUpload").click(() => {doUpload()});
+
+          $("#btDownload").click(() => {download()});
+
+
+        });
+
+
+
+        //   "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjI2OGNhNTBjZTY0YjQxYWIzNGZhMDM1NzIwMmQ5ZTk0ZTcyYmQ2ZWMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdXdvcmstZmIiLCJhdWQiOiJ1d29yay1mYiIsImF1dGhfdGltZSI6MTU2NjU2MDQ1NCwidXNlcl9pZCI6IlBEYVplWVVjZ2JRbVVyaEs4TmZSVzZSWlpyOTMiLCJzdWIiOiJQRGFaZVlVY2diUW1VcmhLOE5mUlc2UlpacjkzIiwiaWF0IjoxNTY2NTYwNDcwLCJleHAiOjE1NjY1NjQwNzAsImVtYWlsIjoicG9nbGVpdGVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBvZ2xlaXRlQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.M7VP9uS76FVJhHVAvIdj-INZBVyRW9LK6WXcaCrCuh79XvSKJTfV6B9gVIcTaJfD2SzaEXtLWMhv5F48RGKMlx01YC_wpmylidOjxv7Oqm7xGamzY9ISEy4jDsVKLhl3ESUdW2-Z17n97kltT-CEWABeVN0DEBLVzB5JJHxhXjMAKjCdnusMiH5RpLGFiUefBI87h1bgFEwC1sh5wTKcDl8wHMt-3G2zrysXVT5uEMcV2LipkISHnuYVoOTBd2xXHlvhSxlVx8G5oXiXIXlVG6CrGqzgJG3XktXsrDwNPCQ2ydPjmifDgZrS6kTPGnbEkdgLpis7Yd0-sR6e3UflLA"
+
+      </script>
+
+      <h2>Usuário</h2>
+      <input type="text" id="txEmail" value="pogleite@gmail.com"></input>
+      <input type="text" id="txPassword" value="teste123"></input>
+
+      <button id="btLogin"> Login </button>
+
+      <button id="btToken"> GetToken </button>
+
+      <button id="btCreate"> Create User </button>
+
+
+      <h2>Arquivo</h2>
+      <input id="inImage" type="file" accept="image/*" id="inImage">
+      <button id="btUpload"> Upload </button>
+
+
+      <br>
+      <button id="btDownload"> Download </button>
+      <img id = 'myimg' src={afdasdf}></img>
+
+    </body>
+
+</html>
