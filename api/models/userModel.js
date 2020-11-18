@@ -46,12 +46,18 @@ const UserSchema = new Schema(
     },
     email: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     // Firebase ID.
     uid: {
       type: String,
-      required: true
+      required: true,
+      index: true,
+      unique: true
+    },
+    orgId: {
+      type: Schema.Types.ObjectId
     },
     isAdmin: Boolean
   }

@@ -9,6 +9,7 @@ var express = require('express'),
   Criteria = require('./api/models/criteriaModel'),
   User = require('./api/models/userModel'),
   bodyParser = require('body-parser'),
+  cors = require('cors'),
   fs = require('fs'),
   swaggerJsdoc = require('swagger-jsdoc'),
   swaggerUi = require('swagger-ui-express')
@@ -24,6 +25,7 @@ mongoose.connect('mongodb+srv://admin:' + config.password + '@cluster0.ru7w6.mon
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 
 
 var routes = require('./api/routes/organizationRoutes'); //importing route

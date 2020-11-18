@@ -98,14 +98,15 @@
  */
 module.exports = function(app) {
   var user = require('../controllers/userController');
+  var fbAuth = require('../../firebaseAuth');
 
   app.route('/user')
-    .post(user.add)
-    .get(user.listAll)
-    .delete(user.deleteAll);
-  
-  app.route('/user/:userId')
-    .get(user.get)
-    .put(user.update)
-    .delete(user.delete);
+    .post(fbAuth, user.add);
+    // .get(fbAuth, user.listAll)
+    // .delete(fbAuth, user.deleteAll);
+
+  app.route('/user/me')
+    .get(fbAuth, user.get)
+    .put(fbAuth, user.update)
+    .delete(fbAuth, user.delete);
 };

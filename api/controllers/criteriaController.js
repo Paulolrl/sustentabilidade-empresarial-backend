@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
   Criteria = mongoose.model('Criteria');
 
 exports.add = function(req, res) {
+  req.body.dimensionId = req.params.dimensionId;
   const newCriteria = new Criteria(req.body);
   newCriteria.save(function(err, criteria) {
     if (err) {
@@ -15,6 +16,7 @@ exports.add = function(req, res) {
 };
 
 exports.update = function(req, res) {
+  req.body.dimensionId = req.params.dimensionId;
   Criteria.findByIdAndUpdate(req.params.criteriaId, req.body, function(err, criteria) {
     if (err) {
       res.send(err);
@@ -37,7 +39,7 @@ exports.get = function(req, res) {
 };
 
 exports.listAll = function(req, res) {
-  Criteria.find({}, function(err, criteria) {
+  Criteria.find({dimensionId: req.params.dimensionId}, function(err, criteria) {
     if (err) {
       res.send(err);
     } else {
@@ -60,7 +62,7 @@ exports.delete = function(req, res) {
 
 // TODO: remove this before production
 exports.deleteAll = function(req, res) {
-  Criteria.deleteMany({}, function(err, criteria) {
+  Criteria.deleteMany({dimensionId: req.params.dimensionId}, function(err, criteria) {
     if (err) {
       res.send(err);
     } else {

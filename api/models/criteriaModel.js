@@ -38,6 +38,11 @@ var CriteriaSchema = new Schema(
     weight: {
       type: Number,
       required: true
+    },
+    dimensionId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      index: true
     }
   },
   {
