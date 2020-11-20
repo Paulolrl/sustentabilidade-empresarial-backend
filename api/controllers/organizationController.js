@@ -35,9 +35,17 @@ exports.get = function(req, res) {
   });
 };
 
+exports.getMine = function(req, res) {
+  Organization.findById(req.user.orgId, function(err, organization) {
+    if (err)
+      res.send(err);
+    res.json(organization);
+  });
+};
+
 
 exports.update = function(req, res) {
-  Organization.findOneAndUpdate({_id: req.params.orgId}, {$set: req.body}, function(err, organization) {
+  Organization.findByIdAndUpdate(req.params.orgId, {$set: req.body}, function(err, organization) {
     if (err)
       res.send(err);
     else
@@ -45,11 +53,25 @@ exports.update = function(req, res) {
   });
 };
 
+exports.updateMine = function(req, res) {
+  Organization.findByIdAndUpdate(req.user.orgId, {$set: req.body}, function(err, organization) {
+    if (err)
+      res.send(err);
+    else
+      res.send({...organization._doc, ...req.body});
+  });
+};
 
 exports.delete = function(req, res) {
-  Organization.remove({
-    _id: req.params.orgId
-  }, function(err, organization) {
+  Organization.findByIdAndDelete(req.params.orgId, function(err, organization) {
+    if (err)
+      res.send(err);
+    res.json({ message: 'Organization successfully deleted' });
+  });
+};
+
+exports.deleteMine = function(req, res) {
+  Organization.findByIdAndDelete(req.user.orgId, function(err, organization) {
     if (err)
       res.send(err);
     res.json({ message: 'Organization successfully deleted' });

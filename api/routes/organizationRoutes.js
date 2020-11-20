@@ -99,15 +99,20 @@
  */
 module.exports = function(app) {
   var organizations = require('../controllers/organizationController');
-  var fbAuth = require('../../firebaseAuth');
+  var auth = require('../auth/auth');
 
   // todoList Routes
   app.route('/organization')
-    .get(fbAuth, organizations.listAll)
-    .post(fbAuth, organizations.add)
+    .get(auth.verifyToken, auth.verifyAdmin, organizations.listAll)
+    .post(auth.verifyToken, organizations.add)
+
+  app.route('/organization/mine')
+    .get(auth.verifyToken, organizations.getMine)
+    .put(auth.verifyToken, organizations.updateMine)
+    .delete(auth.verifyToken, organizations.deleteMine);
 
   app.route('/organization/:orgId')
-    .get(fbAuth, organizations.get)
-    .put(fbAuth, organizations.update)
-    .delete(fbAuth, organizations.delete);
+    .get(auth.verifyToken, auth.verifyAdmin, organizations.get)
+    .put(auth.verifyToken, auth.verifyAdmin, organizations.update)
+    .delete(auth.verifyToken, auth.verifyAdmin, organizations.delete);
 };

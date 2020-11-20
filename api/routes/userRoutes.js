@@ -45,15 +45,20 @@
  */
 module.exports = function(app) {
   var user = require('../controllers/userController');
-  var fbAuth = require('../../firebaseAuth');
+  var auth = require('../auth/auth');
 
   app.route('/user')
-    .post(fbAuth, user.add);
-    // .get(fbAuth, user.listAll)
-    // .delete(fbAuth, user.deleteAll);
+    .post(auth.verifyToken, user.add)
+    .get(auth.verifyToken, auth.verifyAdmin, user.listAll)
+    .delete(auth.verifyToken, auth.verifyAdmin, user.deleteAll);
 
   app.route('/user/me')
-    .get(fbAuth, user.get)
-    .put(fbAuth, user.update)
-    .delete(fbAuth, user.delete);
+    .get(auth.verifyToken, user.getMe)
+    .put(auth.verifyToken, user.updateMe)
+    .delete(auth.verifyToken, user.deleteMe);
+
+  app.route('/user/:userId')
+    .get(auth.verifyToken, auth.verifyAdmin, user.get)
+    .put(auth.verifyToken, auth.verifyAdmin, user.update)
+    .delete(auth.verifyToken, auth.verifyAdmin, user.delete);
 };
