@@ -4,13 +4,17 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Organization = require('./api/models/organizationModel'), //created model loading here
   Dimension = require('./api/models/dimensionModel'), //created model loading here
+  Criteria = require('./api/models/criteriaModel'),
   Indicator = require('./api/models/indicatorModel'),
   Criteria = require('./api/models/criteriaModel'),
   User = require('./api/models/userModel'),
   Evaluation = require('./api/models/evaluationModel'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
-  fs = require('fs');
+  fs = require('fs'),
+  swaggerJsdoc = require('swagger-jsdoc'),
+  swaggerUi = require('swagger-ui-express')
+  swagger_options = require('./swagger_options');
 
 
 let rawdata = fs.readFileSync('config.json');
@@ -31,10 +35,10 @@ routes(app); //register the route
 var routes = require('./api/routes/dimensionRoutes'); //importing route
 routes(app); //register the route
 
-var routes = require('./api/routes/indicatorRoutes'); //importing route
+var routes = require('./api/routes/criteriaRoutes'); //importing route
 routes(app); //register the route
 
-var routes = require('./api/routes/criteriaRoutes'); //importing route
+var routes = require('./api/routes/indicatorRoutes'); //importing route
 routes(app); //register the route
 
 var routes = require('./api/routes/userRoutes'); //importing route
@@ -42,6 +46,9 @@ routes(app); //register the route
 
 var routes = require('./api/routes/evaluationRoutes'); //importing route
 routes(app);
+
+const specs = swaggerJsdoc(swagger_options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.listen(port);
 

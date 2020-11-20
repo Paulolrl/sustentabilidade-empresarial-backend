@@ -3,6 +3,38 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         firstName:
+ *           type: string
+ *         lastName:
+ *           type: string
+ *         email:
+ *           type: string
+ *         orgId:
+ *           type: string
+ *   UserMongo:
+ *     allOf:
+ *       - $ref: '#/components/schemas/User'
+ *       - type: object
+ *         properties:
+ *           _id:
+ *             type: string
+ *           __v:
+ *             type: number
+ *           uid:
+ *             type: string
+ * 
+ *   ListOfUsers:
+ *     type: array
+ *     items:
+ *       $ref: '#/components/UserMongo'
+ */
 const UserSchema = new Schema(
   {
     firstName: {
