@@ -2,16 +2,21 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
+var AnswerSchema = new Schema(
+  {
+    ansId: Number,
+    text: String
+  }
+)
+
 var AnswerGivenSchema = new Schema(
   {
     indicatorId: {
       type: Schema.Types.ObjectId,
       required: true
     },
-    answer: {
-      type: String,
-      required: true
-    }
+    answer: [AnswerSchema]
   }
 );
 
