@@ -47,6 +47,9 @@ routes(app); //register the route
 var routes = require('./api/routes/evaluationRoutes'); //importing route
 routes(app);
 
+var routes = require('./api/routes/commonRoutes'); //importing route
+routes(app);
+
 const specs = swaggerJsdoc(swagger_options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
