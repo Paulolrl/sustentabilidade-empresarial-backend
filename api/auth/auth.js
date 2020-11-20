@@ -63,13 +63,13 @@ exports.verifyToken = (req, res, next) => {
             req.user = user;
             return next();
           } catch(e) {
-            res.send(e)
+            res.status(403).send(e)
           }
       }).catch(function (error) {
-          res.send(error)
+          res.status(403).send(error)
       });
     } else {
-      res.status(403).send('Token não foi enviado')
+      res.status(403).send({code: 'noToken', message: 'Token não foi enviado'})
     }
 
 };
@@ -79,10 +79,10 @@ exports.verifyAdmin = (req, res, next) => {
       if(req.user.isAdmin){
         return next()
       } else {
-        res.status(403).send('Não autorizado');
+        res.status(403).send({code: 'adminOnly', message: 'Não autorizado'});
       }
     } catch(e) {
-      res.send(e);
+      res.status(403).send(e);
     }
 }
 
