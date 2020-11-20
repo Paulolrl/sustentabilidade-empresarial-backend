@@ -21,7 +21,7 @@ var EvaluationSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true
     },
-    questions: {
+    answers: {
       type: [AnswerGivenSchema],
       required: true
     },
