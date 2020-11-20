@@ -8,6 +8,7 @@ var express = require('express'),
   Indicator = require('./api/models/indicatorModel'),
   Criteria = require('./api/models/criteriaModel'),
   User = require('./api/models/userModel'),
+  Evaluation = require('./api/models/evaluationModel'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   fs = require('fs'),
@@ -42,6 +43,9 @@ routes(app); //register the route
 
 var routes = require('./api/routes/userRoutes'); //importing route
 routes(app); //register the route
+
+var routes = require('./api/routes/evaluationRoutes'); //importing route
+routes(app);
 
 const specs = swaggerJsdoc(swagger_options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
