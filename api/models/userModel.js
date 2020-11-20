@@ -16,9 +16,8 @@ const Schema = mongoose.Schema;
  *           type: string
  *         email:
  *           type: string
- *         uid:
+ *         orgId:
  *           type: string
- * 
  *   UserMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/User'
@@ -28,6 +27,8 @@ const Schema = mongoose.Schema;
  *             type: string
  *           __v:
  *             type: number
+ *           uid:
+ *             type: string
  * 
  *   ListOfUsers:
  *     type: array

@@ -2,7 +2,7 @@
 
 /**
  * @swagger
- * /organizations:
+ * /organization:
  *   get:
  *     tags: [Organization]
  *     summary: Gets the list of registered organizations
@@ -13,6 +13,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#components/ListOfOrgs'
+ *       401:
+ *         description: Authentication with token failed
  * 
  *   post:
  *     tags: [Organization]
@@ -30,18 +32,22 @@
  *           application/json:
  *             schema:
  *               $ref: '#components/OrganizationMongo'
+ *       400:
+ *         description: JSON body with syntax error
+ *       401:
+ *         description: Authentication with token failed
  * 
- * /organizations/{orgId}:
+ * /organization/{orgId}:
+ *   parameters:
+ *     - in: path
+ *       name: orgId
+ *       schema:
+ *         type: string
+ *         required: true
+ *         description: The organization id
  *   get:
  *     tags: [Organization]
  *     summary: Gets an organization by id
- *     parameters:
- *       - in: path
- *         name: orgId
- *         schema:
- *           type: string
- *           required: true
- *           description: The organization id
  *     responses:
  *       200:
  *         description: The organization object matching the id
@@ -49,19 +55,14 @@
  *           application/json:
  *             schema:
  *               $ref: '#components/OrganizationMongo'
+ *       401:
+ *         description: Authentication with token failed
  *       404:
  *         description: Organization id not found
  * 
  *   put:
  *     tags: [Organization]
  *     summary: Updates an organization
- *     parameters:
- *       - in: path
- *         name: orgId
- *         schema:
- *           type: string
- *           required: true
- *           description: The organization id
  *     requestBody:
  *       required: true
  *       content:
@@ -75,20 +76,23 @@
  *           application/json:
  *             schema:
  *                $ref: '#components/OrganizationMongo'
+ *       400:
+ *         description: JSON body with syntax error
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Organization id not found
  * 
  *   delete:
  *     tags: [Organization]
  *     summary: Deletes a organization by id
- *     parameters:
- *       - in: path
- *         name: orgId
- *         schema:
- *           type: string
- *           required: true
- *           description: The organization id
  *     responses:
  *       200:
  *         description: Delete was successful
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Organization id not found
  * 
  * components:
  *   $ref: '../models/organizationModel.js'

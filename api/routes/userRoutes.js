@@ -2,53 +2,10 @@
 
 /**
  * @swagger
- * /user:
+ * /user/me:
  *   get:
  *     tags: [User]
- *     summary: Gets the list of all users
- *     responses:
- *       200:
- *         description: List of all users
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#components/ListOfUsers'
- * 
- *   post:
- *     tags: [User]
- *     summary: Registers a user
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#components/schemas/User'
- *     responses:
- *       200:
- *         description: The registered user
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#components/UserMongo'
- * 
- *   delete:
- *     tags: [User]
- *     summary: Deletes all users
- *     responses:
- *       200:
- *         description: Delete was successful
- * 
- * /user/{userId}:
- *   get:
- *     tags: [User]
- *     summary: Gets a user by id
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *           required: true
- *           description: The user id
+ *     summary: Gets an user by their Firebase authentication token
  *     responses:
  *       200:
  *         description: The user object matching the id
@@ -56,19 +13,12 @@
  *           application/json:
  *             schema:
  *               $ref: '#components/UserMongo'
- *       404:
- *         description: User id not found
+ *       401:
+ *         description: Authentication with token failed
  * 
  *   put:
  *     tags: [User]
- *     summary: Updates a user
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *           required: true
- *           description: The user id
+ *     summary: Updates an user by their Firebase authentication token
  *     requestBody:
  *       required: true
  *       content:
@@ -78,20 +28,17 @@
  *     responses:
  *       200:
  *         description: Update was successful
+ *       401:
+ *         description: Authentication with token failed
  * 
  *   delete:
  *     tags: [User]
- *     summary: Deletes a user by id
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *           required: true
- *           description: The user id
+ *     summary: Deletes an user by their Firebase authentication token
  *     responses:
  *       200:
  *         description: Delete was successful
+ *       401:
+ *         description: Authentication with token failed
  * 
  * components:
  *   $ref: '../models/userModel.js'

@@ -13,6 +13,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#components/ListOfDimensions'
+ *       401:
+ *         description: Authentication with token failed
  * 
  *   post:
  *     tags: [Dimension]
@@ -30,6 +32,10 @@
  *           application/json:
  *             schema:
  *               $ref: '#components/DimensionMongo'
+ *       400:
+ *         description: JSON body with syntax error
+ *       401:
+ *         description: Authentication with token failed
  * 
  *   delete:
  *     tags: [Dimension]
@@ -37,18 +43,20 @@
  *     responses:
  *       200:
  *         description: Delete was successful
+ *       401:
+ *         description: Authentication with token failed
  * 
  * /dimension/{dimensionId}:
+ *   parameters:
+ *     - in: path
+ *       name: dimensionId
+ *       schema:
+ *         type: string
+ *         required: true
+ *         description: The dimension id
  *   get:
  *     tags: [Dimension]
  *     summary: Gets a dimension by id
- *     parameters:
- *       - in: path
- *         name: dimensionId
- *         schema:
- *           type: string
- *           required: true
- *           description: The dimension id
  *     responses:
  *       200:
  *         description: The dimension object matching the id
@@ -58,17 +66,12 @@
  *               $ref: '#components/DimensionMongo'
  *       404:
  *         description: Dimension id not found
+ *       401:
+ *         description: Authentication with token failed
  * 
  *   put:
  *     tags: [Dimension]
  *     summary: Updates a dimension
- *     parameters:
- *       - in: path
- *         name: dimensionId
- *         schema:
- *           type: string
- *           required: true
- *           description: The dimension id
  *     requestBody:
  *       required: true
  *       content:
@@ -78,20 +81,19 @@
  *     responses:
  *       200:
  *         description: Update was successful
+ *       400:
+ *         description: JSON body with syntax error
+ *       401:
+ *         description: Authentication with token failed
  * 
  *   delete:
  *     tags: [Dimension]
  *     summary: Deletes a dimension by id
- *     parameters:
- *       - in: path
- *         name: dimensionId
- *         schema:
- *           type: string
- *           required: true
- *           description: The dimension id
  *     responses:
  *       200:
  *         description: Delete was successful
+ *       401:
+ *         description: Authentication with token failed
  * 
  * components:
  *   $ref: '../models/dimensionModel.js'

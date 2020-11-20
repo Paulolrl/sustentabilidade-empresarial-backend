@@ -11,6 +11,10 @@ var Schema = mongoose.Schema;
  *       properties:
  *         name:
  *           type: string
+ *         code:
+ *           type: number
+ *         description:
+ *           type: string
  *         year:
  *           type: number
  * 

@@ -2,21 +2,32 @@
 
 /**
  * @swagger
- * /criteria:
+ * /dimension/{dimensionId}/criteria:
+ *   parameters:
+ *     - in: path
+ *       name: dimensionId
+ *       schema:
+ *         type: string
+ *         required: true
+ *         description: The dimension id
  *   get:
  *     tags: [Criteria]
- *     summary: Gets the list of all criteria
+ *     summary: Gets all criteria of a dimension
  *     responses:
  *       200:
- *         description: List of all criteria
+ *         description: List of all criteria of a dimension
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#components/ListOfCriteria'
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Dimension id not found
  * 
  *   post:
  *     tags: [Criteria]
- *     summary: Registers a criterion
+ *     summary: Registers a dimension's criterion
  *     requestBody:
  *       required: true
  *       content:
@@ -30,45 +41,55 @@
  *           application/json:
  *             schema:
  *               $ref: '#components/CriterionMongo'
+ *       400:
+ *         description: JSON body with syntax error
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Dimension id not found
  * 
  *   delete:
  *     tags: [Criteria]
- *     summary: Deletes all criteria
+ *     summary: Deletes all criteria of a dimension
  *     responses:
  *       200:
  *         description: Delete was successful
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Dimension id not found
  * 
- * /criteria/{criteriaId}:
+ * /dimension/{dimensionId}/criteria/{criteriaId}:
+ *   parameters:
+ *     - in: path
+ *       name: dimensionId
+ *       schema:
+ *         type: string
+ *         required: true
+ *         description: The dimension id
+ *     - in: path
+ *       name: criteriaId
+ *       schema:
+ *         type: string
+ *         required: true
+ *         description: The criterion id
  *   get:
  *     tags: [Criteria]
- *     summary: Gets a criterion by id
- *     parameters:
- *       - in: path
- *         name: criteriaId
- *         schema:
- *           type: string
- *           required: true
- *           description: The criterion id
+ *     summary: Gets a dimension's criteria
  *     responses:
  *       200:
- *         description: The criterion object matching the id
+ *         description: The criterion object 
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#components/CriterionMongo'
+ *       401:
+ *         description: Authentication with token failed
  *       404:
- *         description: Criterion id not found
- * 
+ *         description: Dimension or criterion id not found
  *   put:
  *     tags: [Criteria]
- *     summary: Updates a criterion
- *     parameters:
- *       - in: path
- *         name: criteriaId
- *         schema:
- *           type: string
- *           required: true
- *           description: The criterion id
+ *     summary: Updates a dimension's criterion
  *     requestBody:
  *       required: true
  *       content:
@@ -78,20 +99,46 @@
  *     responses:
  *       200:
  *         description: Update was successful
+ *       400:
+ *         description: JSON body with syntax error
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Dimension or criterion id not found
  * 
  *   delete:
  *     tags: [Criteria]
- *     summary: Deletes a criterion by id
- *     parameters:
- *       - in: path
- *         name: criteriaId
- *         schema:
- *           type: string
- *           required: true
- *           description: The criterion id
+ *     summary: Deletes a dimension's criterion
  *     responses:
  *       200:
  *         description: Delete was successful
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Dimension or criterion id not found
+ * 
+ * /criteria/{criteriaId}:
+ *   parameters:
+ *     - in: path
+ *       name: criteriaId
+ *       schema:
+ *         type: string
+ *         required: true
+ *         description: The criterion id
+ *   get:
+ *     tags: [Criteria]
+ *     summary: Gets a criterion by id
+ *     responses:
+ *       200:
+ *         description: The criterion object matching the id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#components/CriterionMongo'
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Criterion id not found
  * 
  * components:
  *   $ref: '../models/criteriaModel.js'

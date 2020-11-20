@@ -23,6 +23,8 @@ var Schema = mongoose.Schema;
  *             type: string
  *           __v:
  *             type: number
+ *           dimensionId:
+ *             type: string
  * 
  *   ListOfCriteria:
  *     type: array
