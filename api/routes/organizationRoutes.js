@@ -6,6 +6,8 @@
  *   get:
  *     tags: [Organization]
  *     summary: Gets the list of registered organizations
+ *     description: "Gets a JSON list containing all organization entries 
+ *       inside the database. Your authorization token must have admin access."
  *     responses:
  *       200:
  *         description: List of organization objects
@@ -19,6 +21,7 @@
  *   post:
  *     tags: [Organization]
  *     summary: Registers an organization
+ *     description: "Receives an organization object and save it into the database."
  *     requestBody:
  *       required: true
  *       content:
@@ -27,13 +30,60 @@
  *             $ref: '#components/schemas/Organization'
  *     responses:
  *       200:
- *         description: The registered organization
+ *         description: The registered organization JSON object
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#components/OrganizationMongo'
  *       400:
  *         description: JSON body with syntax error
+ *       401:
+ *         description: Authentication with token failed
+ * 
+ * /organization/mine:
+ *   get:
+ *     tags: [Organization]
+ *     summary: Gets the user's organization.
+ *     description: "Gets the organization object that was registered using this user token."
+ *     responses:
+ *       200:
+ *         description: The user's organization
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#components/OrganizationMongo'
+ *       401:
+ *         description: Authentication with token failed
+ * 
+ *   put:
+ *     tags: [Organization]
+ *     summary: Updates the user's organization
+ *     description: "Updates the organization object that was registered using this user token."
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#components/schemas/Organization'
+ *     responses:
+ *       200:
+ *         description: The updated organization object
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#components/OrganizationMongo'
+ *       400:
+ *         description: JSON body with syntax error
+ *       401:
+ *         description: Authentication with token failed
+ * 
+ *   delete:
+ *     tags: [Organization]
+ *     summary: Deletes the user's organization
+ *     description: "Deletes the organization object that was registered using this user token."
+ *     responses:
+ *       200:
+ *         description: Delete was successful
  *       401:
  *         description: Authentication with token failed
  * 
@@ -48,6 +98,8 @@
  *   get:
  *     tags: [Organization]
  *     summary: Gets an organization by id
+ *     description: "Gets an organization object by its id from 
+ *       inside the database. Your authorization token must have admin access."
  *     responses:
  *       200:
  *         description: The organization object matching the id
@@ -63,6 +115,8 @@
  *   put:
  *     tags: [Organization]
  *     summary: Updates an organization
+ *     description: "Updates an organization object by its id. 
+ *       Your authorization token must have admin access."
  *     requestBody:
  *       required: true
  *       content:
@@ -86,6 +140,8 @@
  *   delete:
  *     tags: [Organization]
  *     summary: Deletes a organization by id
+ *     description: "Deletes an organization object by its id. 
+ *       Your authorization token must have admin access."
  *     responses:
  *       200:
  *         description: Delete was successful
@@ -101,7 +157,6 @@ module.exports = function(app) {
   var organizations = require('../controllers/organizationController');
   var auth = require('../auth/auth');
 
-  // todoList Routes
   app.route('/organization')
     .get(auth.verifyToken, auth.verifyAdmin, organizations.listAll)
     .post(auth.verifyToken, organizations.add)
