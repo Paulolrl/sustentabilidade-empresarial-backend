@@ -13,7 +13,7 @@ var Schema = mongoose.Schema;
  *           type: string
  *         points:
  *           type: number
- * 
+ *
  *     Question:
  *       type: object
  *       properties:
@@ -23,7 +23,7 @@ var Schema = mongoose.Schema;
  *           type: number
  *         answer:
  *           $ref: '#/components/schemas/Answer'
- * 
+ *
  *     Indicator:
  *       type: object
  *       properties:
@@ -41,7 +41,7 @@ var Schema = mongoose.Schema;
  *           type: boolean
  *         question:
  *           $ref: '#/components/schemas/Question'
- * 
+ *
  *   AnswerMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/Answer'
@@ -49,7 +49,7 @@ var Schema = mongoose.Schema;
  *         properties:
  *           _id:
  *             type: string
- * 
+ *
  *   QuestionMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/Question'
@@ -57,7 +57,7 @@ var Schema = mongoose.Schema;
  *         properties:
  *           _id:
  *             type: string
- * 
+ *
  *   IndicatorMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/Indicator'
@@ -69,7 +69,7 @@ var Schema = mongoose.Schema;
  *             type: number
  *           criteriaId:
  *             type: string
- * 
+ *
  *   ListOfIndicators:
  *     type: array
  *     items:
@@ -79,11 +79,11 @@ var AnswerSchema = new Schema(
   {
     answer: {
       type: String,
-      required: 'Enter answer'
+      // required: 'Enter answer'
     },
     points: {
       type: Number,
-      required: 'Enter number of points'
+      // required: 'Enter number of points'
     }
   }
 );
@@ -92,11 +92,11 @@ var QuestionsSchema = new Schema(
   {
     title: {
       type: String,
-      required: 'Enter the question'
+      // required: 'Enter the question'
     },
     type: {
       type: String,
-      required: 'Enter question type'
+      // required: 'Enter question type'
     },
     answer: [AnswerSchema]
   },
@@ -106,32 +106,32 @@ var IndicatorSchema = new Schema(
   {
     name: {
       type: String,
-      required: 'Enter indicator name'
+      // required: 'Enter indicator name'
     },
     number: {
       type: Number,
-      required: 'Enter indicator number'
+      // required: 'Enter indicator number'
     },
     description: {
       type: String,
-      required: 'Enter indicator description'
+      // required: 'Enter indicator description'
     },
     reference: {
       type: String
     },
     weight: {
       type: Number,
-      required: 'Enter indicator weight'
+      // required: 'Enter indicator weight'
     },
     criteriaId: {
       type: Schema.Types.ObjectId,
-      required: true,
+      // required: true,
       index: true
     },
     question: QuestionsSchema,
     evidence: {
       type: Boolean
-    }    
+    }
   },
   {
     collection : 'Indicator'
