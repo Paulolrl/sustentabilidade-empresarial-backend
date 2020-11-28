@@ -116,6 +116,10 @@ var IndicatorSchema = new Schema(
       type: String,
       // required: 'Enter indicator description'
     },
+    instructions: {
+      type: String,
+      // required: 'Enter indicator description'
+    },
     reference: {
       type: String
     },
