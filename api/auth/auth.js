@@ -63,13 +63,13 @@ exports.verifyToken = (req, res, next) => {
             req.user = user;
             return next();
           } catch(e) {
-            res.status(403).send(e)
+            res.status(401).json({message: 'Unable to authenticate token', error: e});
           }
-      }).catch(function (error) {
-          res.status(403).send(error)
+      }).catch(function (e) {
+          res.status(401).json({message: 'Unable to authenticate token', error: e});
       });
     } else {
-      res.status(403).send({code: 'noToken', message: 'Token não foi enviado'})
+      res.status(401).json({message: 'No token was provided'});
     }
 
 };
@@ -77,12 +77,12 @@ exports.verifyToken = (req, res, next) => {
 exports.verifyAdmin = (req, res, next) => {
     try {
       if(req.user.isAdmin){
-        return next()
+        return next();
       } else {
-        res.status(403).send({code: 'adminOnly', message: 'Não autorizado'});
+        res.status(403).json({message: 'User does not have admin privileges'});
       }
     } catch(e) {
-      res.status(403).send(e);
+      res.status(403).json({message: 'Unable to verify admin access', error: e});
     }
 }
 

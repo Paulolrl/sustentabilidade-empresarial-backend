@@ -16,8 +16,11 @@
  *             schema:
  *               $ref: '#components/ListOfOrgs'
  *       401:
- *         description: Authentication with token failed
- * 
+ *         description: No authorization token provided or authentication failed
+ *       403:
+ *         description: User does not have enough privileges
+ *       500:
+ *         description: Unable to list all organizations
  *   post:
  *     tags: [Organization]
  *     summary: Registers an organization
@@ -36,9 +39,11 @@
  *             schema:
  *               $ref: '#components/OrganizationMongo'
  *       400:
- *         description: JSON body with syntax error
+ *         description: JSON body is not valid
  *       401:
  *         description: Authentication with token failed
+ *       500:
+ *         description: Unable to register organization
  * 
  * /organization/mine:
  *   get:
@@ -54,6 +59,10 @@
  *               $ref: '#components/OrganizationMongo'
  *       401:
  *         description: Authentication with token failed
+ *       404:
+ *         description: This user does not have an organization
+ *       500:
+ *         description: Unable to get organization
  * 
  *   put:
  *     tags: [Organization]
@@ -76,6 +85,10 @@
  *         description: JSON body with syntax error
  *       401:
  *         description: Authentication with token failed
+ *       404:
+ *         description: This user does not have an organization
+ *       500:
+ *         description: Unable to update organization
  * 
  *   delete:
  *     tags: [Organization]
@@ -86,6 +99,10 @@
  *         description: Delete was successful
  *       401:
  *         description: Authentication with token failed
+ *       404:
+ *         description: This user does not have an organization
+ *       500:
+ *         description: Unable to delete organization
  * 
  * /organization/{orgId}:
  *   parameters:
@@ -109,8 +126,12 @@
  *               $ref: '#components/OrganizationMongo'
  *       401:
  *         description: Authentication with token failed
+ *       403:
+ *         description: User does not have enough privileges
  *       404:
  *         description: Organization id not found
+ *       500:
+ *         description: Unable to get organization
  * 
  *   put:
  *     tags: [Organization]
@@ -134,8 +155,12 @@
  *         description: JSON body with syntax error
  *       401:
  *         description: Authentication with token failed
+ *       403:
+ *         description: User does not have enough privileges
  *       404:
  *         description: Organization id not found
+ *       500:
+ *         description: Unable to update organization
  * 
  *   delete:
  *     tags: [Organization]
@@ -147,8 +172,12 @@
  *         description: Delete was successful
  *       401:
  *         description: Authentication with token failed
+ *       403:
+ *         description: User does not have enough privileges
  *       404:
  *         description: Organization id not found
+ *       500:
+ *         description: Unable to delete organization
  * 
  * components:
  *   $ref: '../models/organizationModel.js'
