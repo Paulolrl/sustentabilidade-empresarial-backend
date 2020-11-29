@@ -95,7 +95,7 @@ exports.deleteMine = function(req, res) {
     } else if (organization == null) {
       res.status(404).json({message: 'This user does not have an organization', error: err});
     } else {
-      res.status(500).send({message: 'Unknown error', error: err});
+      res.status(500).json({message: 'Unable to delete organization', error: err});
     }
   });
 };
