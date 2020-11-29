@@ -17,10 +17,10 @@ exports.add = function(req, res) {
   req.body.isAdmin = false;
   const newUser = new User(req.body);
   newUser.save(function(err, user) {
-    if (err) {
-      res.send(err);
+    if (user) {
+      res.status(200).json(user);
     } else {
-      res.json(user);
+      res.status(500).json({message: 'Unable to register user', error: err});
     }
   });
 };
@@ -28,83 +28,78 @@ exports.add = function(req, res) {
 exports.updateMe = function(req, res) {
   req.body.uid = req.uid;
   User.findOneAndUpdate({uid: req.uid}, {$set: req.body}, function(err, user) {
-    if (err) {
-      res.send(err);
-    } else if (!user) {
-      res.status(404).send("User not found!");
+    if (user) {
+      res.status(200).send({...user._doc, ...req.body});
+    } else if (user == null && err == null) {
+      res.status(404).json({message: 'This user does not exist'});
     } else {
-      res.send({...user._doc, ...req.body});
+      res.status(500).json({message: 'Unable to update user', error: err});
     }
   });
 };
 
 exports.update = function(req, res) {
   User.findByIdAndUpdate(req.params.userId, {$set: req.body}, function(err, user) {
-    if (err) {
-      res.send(err);
-    } else if (!user) {
-      res.status(404).send("User not found!");
+    if (user) {
+      res.status(200).send({...user._doc, ...req.body});
+    } else if (user == null) {
+      res.status(404).json({message: 'User id not found', error: err});
     } else {
-      res.send({...user._doc, ...req.body});
+      res.status(500).json({message: 'Unable to update user', error: err});
     }
   });
 };
 
 exports.getMe = async function(req, res) {
-  res.json(req.user);
+  if (req.user == null) {
+    res.status(404).json({message: 'Valid token but unable to find user in database'});
+  } else {
+    res.json(req.user);
+  }
 };
 
 exports.get = async function(req, res) {
   User.findById(req.params.userId, function(err, user) {
-    if (err) {
-      res.send(err);
+    if (user) {
+      res.status(200).json(user);
+    } else if (user == null) {
+      res.status(404).json({message: 'User id not found', error: err});
     } else {
-      res.json(user);
+      res.status(500).json({message: 'Unable to get user', error: err});
     }
   });
 };
 
 exports.listAll = function(req, res) {
   User.find({}, function(err, user) {
-    if (err) {
-      res.send(err);
+    if (user) {
+      res.status(200).json(user);
     } else {
-      res.json(user);
+      res.status(500).json({message: 'Unable to list all users', error: err});
     }
   });
 };
 
 exports.deleteMe = function(req, res) {
   User.findOneAndDelete({uid: req.uid}, function(err, user) {
-    if (err) {
-      res.send(err);
-    } else if (!user) {
-      res.status(404).send("User not found!");
+    if (user) {
+      res.status(200).json({message: 'User successfully deleted'});
+    } else if (user == null && err == null) {
+      res.status(404).json({message: 'This user does not exist'});
     } else {
-      res.send("User matching the ID was deleted!");
+      res.status(500).json({message: 'Unable to delete user', error: err});
     }
   });
 };
 
 exports.delete = function(req, res) {
   User.findByIdAndDelete(req.params.userId, function(err, user) {
-    if (err) {
-      res.send(err);
-    } else if (!user) {
-      res.status(404).send("User not found!");
+    if (user) {
+      res.status(200).json({message: 'User successfully deleted'});
+    } else if (user == null) {
+      res.status(404).json({message: 'User id not found', error: err});
     } else {
-      res.send("User matching the ID was deleted!");
-    }
-  });
-};
-
-// TODO: remove this before production
-exports.deleteAll = function(req, res) {
-  User.deleteMany({}, function(err, user) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send("All user deleted!");
+      res.status(500).json({message: 'Unable to delete user', error: err});
     }
   });
 };
