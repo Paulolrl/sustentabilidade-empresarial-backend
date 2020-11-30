@@ -39,11 +39,14 @@ exports.updateMe = function(req, res) {
 };
 
 exports.update = function(req, res) {
+  const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
+  if (!isValidId) return res.status(404).json({message: 'User id not found'});
+
   User.findByIdAndUpdate(req.params.userId, {$set: req.body}, function(err, user) {
     if (user) {
       res.status(200).send({...user._doc, ...req.body});
-    } else if (user == null) {
-      res.status(404).json({message: 'User id not found', error: err});
+    } else if (user == null && err == null) {
+      res.status(404).json({message: 'User id not found'});
     } else {
       res.status(500).json({message: 'Unable to update user', error: err});
     }
@@ -59,11 +62,14 @@ exports.getMe = async function(req, res) {
 };
 
 exports.get = async function(req, res) {
+  const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
+  if (!isValidId) return res.status(404).json({message: 'User id not found'});
+
   User.findById(req.params.userId, function(err, user) {
     if (user) {
       res.status(200).json(user);
-    } else if (user == null) {
-      res.status(404).json({message: 'User id not found', error: err});
+    } else if (user == null && err == null) {
+      res.status(404).json({message: 'User id not found'});
     } else {
       res.status(500).json({message: 'Unable to get user', error: err});
     }
@@ -93,11 +99,14 @@ exports.deleteMe = function(req, res) {
 };
 
 exports.delete = function(req, res) {
+  const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
+  if (!isValidId) return res.status(404).json({message: 'User id not found'});
+
   User.findByIdAndDelete(req.params.userId, function(err, user) {
     if (user) {
       res.status(200).json({message: 'User successfully deleted'});
-    } else if (user == null) {
-      res.status(404).json({message: 'User id not found', error: err});
+    } else if (user == null && err == null) {
+      res.status(404).json({message: 'User id not found'});
     } else {
       res.status(500).json({message: 'Unable to delete user', error: err});
     }
