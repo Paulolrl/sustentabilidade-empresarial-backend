@@ -55,4 +55,37 @@ var CriteriaSchema = new Schema(
   }
 );
 
+CriteriaSchema.pre('deleteMany', function (next) {
+  const dimensionId = this.getQuery()['dimensionId'];
+  mongoose.model('Criteria').find({dimensionId}, function (err, result) {
+    if (err) {
+      console.log(`[error] ${err}`);
+      next(err);
+    } else {
+      result.forEach(res => {
+        mongoose.model('Indicator').deleteMany({criteriaId: res._id}, function (err, result) {
+          if(err) {
+            console.log(`[error] ${err}`);
+            next(err);
+          }
+        });
+      });
+      next();
+    }
+  });
+});
+
+CriteriaSchema.pre('deleteOne', function (next) {
+  const criteriaId = this.getQuery()['_id'];
+  mongoose.model('Indicator').deleteMany({criteriaId}, function (err, result) {
+    if (err) {
+      console.log(`[error] ${err}`);
+      next(err);
+    } else {
+      console.log('success');
+      next();
+    }
+  });
+});
+
 module.exports = mongoose.model('Criteria', CriteriaSchema);
