@@ -7,7 +7,7 @@
  *     tags: [Dimension]
  *     summary: Gets the list of registered dimensions
  *     description: "Gets a JSON list containing all dimension entries 
- *       inside the database. Your authorization token must have admin access."
+ *       inside the database."
  *     responses:
  *       200:
  *         description: List of dimension objects
@@ -23,7 +23,8 @@
  *   post:
  *     tags: [Dimension]
  *     summary: Registers an dimension
- *     description: "Receives an dimension object and save it into the database."
+ *     description: "Receives an dimension object and save it into the database. 
+ *                   Your authorization token must have admin access."
  *     requestBody:
  *       required: true
  *       content:
@@ -58,7 +59,7 @@
  *     tags: [Dimension]
  *     summary: Gets an dimension by id
  *     description: "Gets an dimension object by its id from 
- *       inside the database. Your authorization token must have admin access."
+ *       inside the database."
  *     responses:
  *       200:
  *         description: The dimension object matching the id
