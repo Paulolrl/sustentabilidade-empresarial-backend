@@ -17,7 +17,7 @@ var Schema = mongoose.Schema;
  *           type: string
  *         year:
  *           type: number
- * 
+ *
  *   DimensionMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/Dimension'
@@ -27,7 +27,7 @@ var Schema = mongoose.Schema;
  *             type: string
  *           __v:
  *             type: number
- * 
+ *
  *   ListOfDimensions:
  *     type: array
  *     items:
@@ -37,19 +37,19 @@ var DimensionSchema = new Schema(
   {
     name: {
       type: String,
-      required: true
+      // required: true
     },
     code: {
       type: Number,
-      required: true
+      // required: true
     },
     description: {
       type: String,
-      required: true
+      // required: true
     },
     year: {
       type: Number,
-      required: true
+      // required: true
     }
   },
   {

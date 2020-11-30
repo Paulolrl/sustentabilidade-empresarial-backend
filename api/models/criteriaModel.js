@@ -13,7 +13,7 @@ var Schema = mongoose.Schema;
  *           type: string
  *         weight:
  *           type: number
- * 
+ *
  *   CriterionMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/Criterion'
@@ -25,7 +25,7 @@ var Schema = mongoose.Schema;
  *             type: number
  *           dimensionId:
  *             type: string
- * 
+ *
  *   ListOfCriteria:
  *     type: array
  *     items:
@@ -35,15 +35,18 @@ var CriteriaSchema = new Schema(
   {
     name: {
       type: String,
-      required: true
+      // required: true
     },
     weight: {
       type: Number,
-      required: true
     },
+    description: {
+      type: String,
+    },
+    // required: true
     dimensionId: {
       type: Schema.Types.ObjectId,
-      required: true,
+      // required: true,
       index: true
     }
   },
