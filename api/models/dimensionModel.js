@@ -57,4 +57,17 @@ var DimensionSchema = new Schema(
   }
 );
 
+DimensionSchema.pre('deleteOne', function (next) {
+  const dimensionId = this.getQuery()['_id'];
+  mongoose.model('Criteria').deleteMany({dimensionId}, function (err, result) {
+    if (err) {
+      console.log(`[error] ${err}`);
+      next(err);
+    } else {
+      console.log('success');
+      next();
+    }
+  });
+});
+
 module.exports = mongoose.model('Dimension', DimensionSchema);

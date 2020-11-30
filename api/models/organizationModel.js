@@ -70,4 +70,17 @@ var OrganizationsSchema = new Schema(
   }
 );
 
+OrganizationsSchema.pre('deleteOne', function (next) {
+  const orgId = this.getQuery()['_id'];
+  mongoose.model('User').update({orgId}, {$set: {orgId: null}}, function (err, result) {
+    if (err) {
+      console.log(`[error] ${err}`);
+      next(err);
+    } else {
+      console.log('success');
+      next();
+    }
+  });
+});
+
 module.exports = mongoose.model('Organizations', OrganizationsSchema);
