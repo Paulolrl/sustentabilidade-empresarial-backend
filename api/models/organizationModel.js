@@ -21,7 +21,9 @@ var Schema = mongoose.Schema;
  *           type: string
  *         sector:
  *           type: string
- * 
+ *         size:
+ *           type: string
+ *
  *   OrganizationMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/Organization'
@@ -31,7 +33,7 @@ var Schema = mongoose.Schema;
  *             type: string
  *           __v:
  *             type: number
- *       
+ *
  *   ListOfOrgs:
  *     type: array
  *     items:
@@ -57,6 +59,9 @@ var OrganizationsSchema = new Schema(
       required: 'Category is required'
     },
     sector: {
+      type: String
+    },
+    size: {
       type: String
     }
   },
