@@ -51,7 +51,7 @@
  *       400:
  *         description: JSON body is not valid
  *       401:
- *         description: Authentication with token failed
+ *         description: No authorization token provided or authentication failed
  *       403:
  *         description: User does not have enough privileges
  *       404:
@@ -87,7 +87,7 @@
  *             schema:
  *               $ref: '#components/CriterionMongo'
  *       401:
- *         description: Authentication with token failed
+ *         description: No authorization token provided or authentication failed
  *       404:
  *         description: Dimension or criterion id not found
  *       500:
@@ -111,7 +111,7 @@
  *       400:
  *         description: JSON body with syntax error
  *       401:
- *         description: Authentication with token failed
+ *         description: No authorization token provided or authentication failed
  *       403:
  *         description: User does not have enough privileges
  *       404:
@@ -129,7 +129,7 @@
  *       200:
  *         description: Delete was successful
  *       401:
- *         description: Authentication with token failed
+ *         description: No authorization token provided or authentication failed
  *       403:
  *         description: User does not have enough privileges
  *       404:
@@ -158,7 +158,7 @@
  *             schema:
  *               $ref: '#components/CriterionMongo'
  *       401:
- *         description: Authentication with token failed
+ *         description: No authorization token provided or authentication failed
  *       404:
  *         description: Criterion id not found
  *       500:
