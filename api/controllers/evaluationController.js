@@ -14,7 +14,7 @@ var mongoose = require('mongoose'),
       }
     });
   };
-  
+
   exports.update = function(req, res) {
     req.body.orgId = req.params.orgId;
     Evaluation.findByIdAndUpdate(req.params.evaluationId, req.body, function(err, evaluation) {
@@ -49,7 +49,7 @@ exports.listAll = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  Evaluation.findByIdAndDelete(req.params.evaluationId, function(err, evaluation) {
+  Evaluation.deleteOne({_id: req.params.evaluationId}, function(err, evaluation) {
     if (err) {
       res.send(err);
     } else if (!evaluation) {

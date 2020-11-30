@@ -46,7 +46,7 @@ var CriteriaSchema = new Schema(
     // required: true
     dimensionId: {
       type: Schema.Types.ObjectId,
-      // required: true,
+      ref: 'Dimension',
       index: true
     }
   },

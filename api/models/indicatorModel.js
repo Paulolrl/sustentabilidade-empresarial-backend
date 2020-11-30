@@ -129,7 +129,8 @@ var IndicatorSchema = new Schema(
     },
     criteriaId: {
       type: Schema.Types.ObjectId,
-      // required: true,
+      ref: 'Criteria',
+      required: true,
       index: true
     },
     question: QuestionsSchema,
