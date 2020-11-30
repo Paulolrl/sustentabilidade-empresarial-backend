@@ -135,7 +135,7 @@ exports.delete = async function(req, res) {
   isValidId = mongoose.Types.ObjectId.isValid(req.params.indicatorId);
   if (!isValidId) return res.status(404).json({message: 'Indicator id not valid'});
 
-  Indicator.findByIdAndDelete(req.params.indicatorId, function(err, indicator) {
+  Indicator.deleteOne({_id: req.params.indicatorId}, function(err, indicator) {
     if (indicator) {
       res.status(200).json({message: 'Indicator successfully deleted'});
     } else if (indicator == null && err == null) {

@@ -58,7 +58,7 @@ exports.delete = function(req, res) {
   const isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
   if (!isValidId) return res.status(404).json({message: 'Dimension id not found'});
 
-  Dimension.findByIdAndDelete(req.params.dimensionId, function(err, dimension) {
+  Dimension.deleteOne({_id: req.params.dimensionId}, function(err, dimension) {
     if (dimension) {
       res.status(200).json({message: 'Dimension successfully deleted'});
     } else if (dimension == null && err == null) {
