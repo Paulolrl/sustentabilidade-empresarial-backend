@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
   Criteria = mongoose.model('Criteria');
 
 exports.add = async function(req, res) {
-  const isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
   if (!isValidId) return res.status(404).json({message: 'Dimension id not valid'});
 
   const dimension = await Dimension.findById(req.params.dimensionId);
@@ -22,7 +22,7 @@ exports.add = async function(req, res) {
 };
 
 exports.update = async function(req, res) {
-  const isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
   if (!isValidId) return res.status(404).json({message: 'Dimension id not valid'});
 
   const dimension = await Dimension.findById(req.params.dimensionId);
@@ -44,7 +44,7 @@ exports.update = async function(req, res) {
 };
 
 exports.getFromDimension = async function(req, res) {
-  const isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
   if (!isValidId) return res.status(404).json({message: 'Dimension id not valid'});
 
   const dimension = await Dimension.findById(req.params.dimensionId);
@@ -65,7 +65,7 @@ exports.getFromDimension = async function(req, res) {
 };
 
 exports.get = async function(req, res) {
-  const isValidId = mongoose.Types.ObjectId.isValid(req.params.criteriaId);
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.criteriaId);
   if (!isValidId) return res.status(404).json({message: 'Criterion id not valid'});
 
   Criteria.findById(req.params.criteriaId, function(err, criteria) {
@@ -80,7 +80,7 @@ exports.get = async function(req, res) {
 };
 
 exports.listAll = async function(req, res) {
-  const isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
   if (!isValidId) return res.status(404).json({message: 'Dimension id not valid'});
 
   const dimension = await Dimension.findById(req.params.dimensionId);
@@ -96,7 +96,7 @@ exports.listAll = async function(req, res) {
 };
 
 exports.delete = async function(req, res) {
-  const isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.dimensionId);
   if (!isValidId) return res.status(404).json({message: 'Dimension id not valid'});
 
   const dimension = await Dimension.findById(req.params.dimensionId);
