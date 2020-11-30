@@ -16,8 +16,6 @@ const Schema = mongoose.Schema;
  *           type: string
  *         email:
  *           type: string
- *         orgId:
- *           type: string
  *   UserMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/User'
@@ -29,6 +27,10 @@ const Schema = mongoose.Schema;
  *             type: number
  *           uid:
  *             type: string
+ *           orgId:
+ *             type: string
+ *           isAdmin:
+ *             type: boolean
  * 
  *   ListOfUsers:
  *     type: array
@@ -60,7 +62,9 @@ const UserSchema = new Schema(
     orgId: {
       type: Schema.Types.ObjectId
     },
-    isAdmin: Boolean
+    isAdmin: {
+      type: Boolean
+    }
   }
 );
 
