@@ -102,7 +102,7 @@ exports.delete = function(req, res) {
   const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
   if (!isValidId) return res.status(404).json({message: 'User id not found'});
 
-  User.findByIdAndDelete(req.params.userId, function(err, user) {
+  User.deleteOne({_id: req.params.userId}, function(err, user) {
     if (user) {
       res.status(200).json({message: 'User successfully deleted'});
     } else if (user == null && err == null) {

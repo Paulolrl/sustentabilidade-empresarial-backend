@@ -86,7 +86,7 @@ exports.delete = function(req, res) {
   const isValidId = mongoose.Types.ObjectId.isValid(req.params.orgId);
   if (!isValidId) return res.status(404).json({message: 'Organization id not found'});
 
-  Organization.findByIdAndDelete(req.params.orgId, function(err, organization) {
+  Organization.deleteOne({_id: req.params.orgId}, function(err, organization) {
     if (organization) {
       res.status(200).json({message: 'Organization successfully deleted'});
     } else if (organization == null && err == null) {
@@ -98,7 +98,7 @@ exports.delete = function(req, res) {
 };
 
 exports.deleteMine = function(req, res) {
-  Organization.findByIdAndDelete(req.user.orgId, function(err, organization) {
+  Organization.deleteOne({_id: req.user.orgId}, function(err, organization) {
     if (organization) {
       res.status(200).json({message: 'Organization successfully deleted'});
     } else if (organization == null) {

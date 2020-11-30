@@ -9,7 +9,7 @@ exports.add = async function(req, res) {
 
   const dimension = await Dimension.findById(req.params.dimensionId);
   if (dimension == null) return res.status(404).json({message: 'Dimension id not found'});
-  
+
   req.body.dimensionId = req.params.dimensionId;
   const newCriteria = new Criteria(req.body);
   newCriteria.save(function(err, criteria) {
@@ -105,7 +105,7 @@ exports.delete = async function(req, res) {
   isValidId = mongoose.Types.ObjectId.isValid(req.params.criteriaId);
   if (!isValidId) return res.status(404).json({message: 'Criterion id not valid'});
 
-  Criteria.findByIdAndDelete(req.params.criteriaId, function(err, criteria) {
+  Criteria.deleteOne({_id: req.params.criteriaId}, function(err, criteria) {
     if (criteria) {
       res.status(200).json({message: 'Criterion successfully deleted'});
     } else if (criteria == null && err == null) {
