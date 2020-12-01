@@ -6,7 +6,18 @@ var mongoose = require('mongoose'),
   Organization = mongoose.model('Organizations');
 
 exports.listAll = function(req, res) {
-  Organization.find({}, function(err, organization) {
+  let limit = parseInt(req.query.pageSize) || 10;
+  let skip = (parseInt(req.query.page) || 0) * limit;
+
+  if(req.query.name && req.query.name != '')
+    req.query.$text = {$search: req.query.name};
+
+  delete req.query.name;
+  delete req.query.pageSize;
+  delete req.query.page;
+
+  Organization.find(req.query)
+  .skip(skip).limit(limit).exec(function(err, organization) {
     if (organization) {
       res.status(200).json(organization);
     } else {

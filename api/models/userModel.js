@@ -31,7 +31,7 @@ const Schema = mongoose.Schema;
  *             type: string
  *           isAdmin:
  *             type: boolean
- * 
+ *
  *   ListOfUsers:
  *     type: array
  *     items:
@@ -41,7 +41,7 @@ const UserSchema = new Schema(
   {
     firstName: {
       type: String,
-      required: true
+      required: true,
     },
     lastName: {
       type: String,
@@ -60,12 +60,15 @@ const UserSchema = new Schema(
       unique: true
     },
     orgId: {
-      type: Schema.Types.ObjectId
+      type: Schema.Types.ObjectId,
+      index: true
     },
     isAdmin: {
       type: Boolean
     }
   }
 );
+
+UserSchema.index({firstName: 'text', lastName: 'text'});
 
 module.exports = mongoose.model('User', UserSchema);
