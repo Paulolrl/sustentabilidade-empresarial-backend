@@ -20,7 +20,7 @@ exports.listAll = function(req, res) {
   Organization.find(req.query)
   .skip(skip).limit(limit).exec(function(err, organization) {
     if (organization) {
-      Organization.estimatedDocumentCount(req.query).exec((count_error, count) => {
+      Organization.countDocuments(req.query).exec((count_error, count) => {
         if (err) {
           res.status(500).json({message: 'Unable to count list', error: count_error});
         } else {

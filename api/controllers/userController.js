@@ -91,7 +91,7 @@ exports.listAll = function(req, res) {
   User.find(req.query)
   .skip(skip).limit(limit).exec(function(err, user) {
     if (user) {
-      User.estimatedDocumentCount(req.query).exec((count_error, count) => {
+      User.countDocuments(req.query).exec((count_error, count) => {
         if (err) {
           res.status(500).json({message: 'Unable to count list', error: count_error});
         } else {
