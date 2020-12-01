@@ -77,8 +77,9 @@ exports.get = async function(req, res) {
 };
 
 exports.listAll = function(req, res) {
+  let page = parseInt(req.query.page || 0);
   let limit = parseInt(req.query.pageSize) || 10;
-  let skip = (parseInt(req.query.page) || 0) * limit;
+  let skip = page * limit;
 
   if(req.query.name && req.query.name != '')
     req.query.$text = {$search: req.query.name};
@@ -90,7 +91,18 @@ exports.listAll = function(req, res) {
   User.find(req.query)
   .skip(skip).limit(limit).exec(function(err, user) {
     if (user) {
-      res.status(200).json(user);
+      User.estimatedDocumentCount(req.query).exec((count_error, count) => {
+        if (err) {
+          res.status(500).json({message: 'Unable to count list', error: count_error});
+        } else {
+          res.status(200).json({
+            total: count,
+            page,
+            pageSize: user.length,
+            results: user
+          });
+        }
+      });
     } else {
       res.status(500).json({message: 'Unable to list all users', error: err});
     }
