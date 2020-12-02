@@ -9,13 +9,13 @@
  *       schema:
  *         type: string
  *         required: true
- *         description: The dimension id
+ *       description: The dimension id
  *     - in: path
  *       name: criteriaId
  *       schema:
  *         type: string
  *         required: true
- *         description: The criterion id
+ *       description: The criterion id
  *   get:
  *     tags: [Indicator]
  *     summary: Gets the list of all indicators of a dimension's criteria
@@ -72,19 +72,19 @@
  *       schema:
  *         type: string
  *         required: true
- *         description: The dimension id
+ *       description: The dimension id
  *     - in: path
  *       name: criteriaId
  *       schema:
  *         type: string
  *         required: true
- *         description: The criterion id
+ *       description: The criterion id
  *     - in: path
  *       name: indicatorId
  *       schema:
  *         type: string
  *         required: true
- *         description: The indicator id
+ *       description: The indicator id
  *   get:
  *     tags: [Indicator]
  *     summary: Gets an indicator of a dimension's criteria
@@ -159,7 +159,7 @@
  *       schema:
  *         type: string
  *         required: true
- *         description: The indicator id
+ *       description: The indicator id
  *   get:
  *     tags: [Indicator]
  *     summary: Gets an indicator by id
