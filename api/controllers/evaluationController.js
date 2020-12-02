@@ -45,7 +45,7 @@ exports.listAll = function(req, res) {
     } else {
       res.json(evaluation);
     }
-  });
+  }).populate('organization').populate({ path: 'answers', populate: {path: 'indicator', populate: {path: 'criteriaId', populate: 'dimensionId'}}})
 };
 
 exports.delete = function(req, res) {
