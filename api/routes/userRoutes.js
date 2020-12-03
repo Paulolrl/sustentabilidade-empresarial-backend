@@ -194,7 +194,7 @@
  *         description: User id not found
  *       500:
  *         description: Unable to delete user
- * 
+ *
  * /user/{userId}/grant-admin-permission:
  *   parameters:
  *     - in: path
@@ -223,7 +223,7 @@
  *         description: User id not found
  *       500:
  *         description: Unable to update user
- * 
+ *
  * /user/{userId}/revoke-admin-permission:
  *   parameters:
  *     - in: path
@@ -252,7 +252,7 @@
  *         description: User id not found
  *       500:
  *         description: Unable to update user
- * 
+ *
  * components:
  *   $ref: '../models/userModel.js'
  */
@@ -271,7 +271,7 @@ module.exports = function(app) {
 
   app.route('/user/:userId')
     .get(auth.verifyToken, auth.verifyAdmin, user.get)
-    .put(auth.verifyToken, auth.verifyAdmin, user.update)
+    // .put(auth.verifyToken, auth.verifyAdmin, user.update)
     .delete(auth.verifyToken, auth.verifyAdmin, user.delete);
 
   app.route('/user/:userId/grant-admin-permission')
