@@ -81,7 +81,7 @@ exports.get = function(req, res) {
 };
 
 exports.listAllFromOrg = function(req, res) {
-  Evaluation.find({orgId: req.params.orgId}, function(err, evaluation) {
+  Evaluation.find({...req.query, orgId: req.params.orgId}, function(err, evaluation) {
     if (evaluation) {
       res.status(200).json(evaluation);
     } else {
@@ -100,15 +100,21 @@ exports.listAll = function(req, res) {
 
   Evaluation.find(req.query).skip(skip).limit(limit).exec(function(err, evaluation) {
     if (evaluation) {
-      Evaluation.countDocuments(req.query).exec((count_error, count) => {
+      Evaluation.countDocuments(req.query).exec(async (count_error, count) => {
         if (err) {
           res.status(500).json({message: 'Unable to count list', error: count_error});
         } else {
+          let results = [];
+          for(let i = 0; i < evaluation.length; i++){
+            let ev = evaluation[i];
+            let org = await Organization.findById(ev.orgId);
+            results.push({organization: org, year: ev.year})
+          }
           res.status(200).json({
             total: count,
             page,
             pageSize: evaluation.length,
-            results: evaluation
+            results
           });
         }
       });
@@ -119,7 +125,7 @@ exports.listAll = function(req, res) {
 };
 
 exports.listMine = function(req, res) {
-  Evaluation.find({orgId: req.user.orgId}, function(err, evaluation) {
+  Evaluation.find({...req.query, orgId: req.user.orgId}, function(err, evaluation) {
     if (evaluation) {
       res.status(200).json(evaluation);
     } else {
