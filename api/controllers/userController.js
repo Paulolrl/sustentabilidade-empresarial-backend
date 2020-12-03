@@ -28,6 +28,8 @@ exports.add = function(req, res) {
 
 exports.updateMe = function(req, res) {
   req.body.uid = req.uid;
+  req.body.email = req.email;
+  
   User.findOneAndUpdate({uid: req.uid}, {$set: req.body}, function(err, user) {
     if (user) {
       res.status(200).send({...user._doc, ...req.body});
