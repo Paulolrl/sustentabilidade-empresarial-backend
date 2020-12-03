@@ -178,7 +178,65 @@
  *         description: User id not found
  *       500:
  *         description: Unable to delete user
- *
+ * 
+ * /user/{userId}/grant-admin-permission:
+ *   parameters:
+ *     - in: path
+ *       name: userId
+ *       schema:
+ *         type: string
+ *         required: true
+ *         description: The user id
+ *   put:
+ *     tags: [User]
+ *     summary: Grants admin privileges to an user
+ *     description: "Search user by its id and grant them admin privileges.
+ *       Your authorization token must have admin access."
+ *     responses:
+ *       200:
+ *         description: The updated user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#components/UserMongo'
+ *       401:
+ *         description: Authentication with token failed
+ *       403:
+ *         description: User does not have enough privileges
+ *       404:
+ *         description: User id not found
+ *       500:
+ *         description: Unable to update user
+ * 
+ * /user/{userId}/revoke-admin-permission:
+ *   parameters:
+ *     - in: path
+ *       name: userId
+ *       schema:
+ *         type: string
+ *         required: true
+ *         description: The user id
+ *   put:
+ *     tags: [User]
+ *     summary: Revokes admin privileges to an user
+ *     description: "Search user by its id and grant them admin privileges.
+ *       Your authorization token must have admin access."
+ *     responses:
+ *       200:
+ *         description: The updated user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#components/UserMongo'
+ *       401:
+ *         description: Authentication with token failed
+ *       403:
+ *         description: User does not have enough privileges
+ *       404:
+ *         description: User id not found
+ *       500:
+ *         description: Unable to update user
+ * 
  * components:
  *   $ref: '../models/userModel.js'
  */
