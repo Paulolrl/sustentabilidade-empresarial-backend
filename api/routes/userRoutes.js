@@ -6,7 +6,7 @@
  *   get:
  *     tags: [User]
  *     summary: Gets the list of registered users
- *     description: "Gets a JSON list containing all user entries 
+ *     description: "Gets a JSON list containing all user entries
  *       inside the database. Your authorization token must have admin access."
  *     responses:
  *       200:
@@ -21,7 +21,7 @@
  *         description: User does not have enough privileges
  *       500:
  *         description: Unable to list all users
- * 
+ *
  *   post:
  *     tags: [User]
  *     summary: Registers an user
@@ -46,7 +46,7 @@
  *         description: Authentication with token failed
  *       500:
  *         description: Unable to register user
- * 
+ *
  * /user/me:
  *   get:
  *     tags: [User]
@@ -63,7 +63,7 @@
  *         description: Authentication with token failed
  *       404:
  *         description: This user does not exist in the database (but has a valid token)
- * 
+ *
  *   put:
  *     tags: [User]
  *     summary: Updates this user
@@ -89,7 +89,7 @@
  *         description: This user does not exist in the database (but has a valid token)
  *       500:
  *         description: Unable to update user
- * 
+ *
  *   delete:
  *     tags: [User]
  *     summary: Deletes this user
@@ -103,7 +103,7 @@
  *         description: This user does not exist in the database (but has a valid token)
  *       500:
  *         description: Unable to delete user
- * 
+ *
  * /user/{userId}:
  *   parameters:
  *     - in: path
@@ -115,7 +115,7 @@
  *   get:
  *     tags: [User]
  *     summary: Gets an user by id
- *     description: "Gets an user object by its id from 
+ *     description: "Gets an user object by its id from
  *       inside the database. Your authorization token must have admin access."
  *     responses:
  *       200:
@@ -132,11 +132,11 @@
  *         description: User id not found
  *       500:
  *         description: Unable to get user
- * 
+ *
  *   put:
  *     tags: [User]
  *     summary: Updates an user
- *     description: "Updates an user object by its id. 
+ *     description: "Updates an user object by its id.
  *       Your authorization token must have admin access."
  *     requestBody:
  *       required: true
@@ -161,11 +161,11 @@
  *         description: User id not found
  *       500:
  *         description: Unable to update user
- * 
+ *
  *   delete:
  *     tags: [User]
  *     summary: Deletes a user by id
- *     description: "Deletes an user object by its id. 
+ *     description: "Deletes an user object by its id.
  *       Your authorization token must have admin access."
  *     responses:
  *       200:
@@ -178,7 +178,7 @@
  *         description: User id not found
  *       500:
  *         description: Unable to delete user
- * 
+ *
  * components:
  *   $ref: '../models/userModel.js'
  */
@@ -199,4 +199,10 @@ module.exports = function(app) {
     .get(auth.verifyToken, auth.verifyAdmin, user.get)
     .put(auth.verifyToken, auth.verifyAdmin, user.update)
     .delete(auth.verifyToken, auth.verifyAdmin, user.delete);
+
+  app.route('/user/:userId/grant-admin-permission')
+    .put(auth.verifyToken, auth.verifyAdmin, user.grantAdmin);
+
+  app.route('/user/:userId/remove-admin-permission')
+    .put(auth.verifyToken, auth.verifyAdmin, user.removeAdmin);
 };
