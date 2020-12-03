@@ -14,6 +14,7 @@ exports.getByUid = async function(uid){
 
 exports.add = function(req, res) {
   req.body.uid = req.uid;
+  req.body.email = req.email;
   req.body.isAdmin = false;
   const newUser = new User(req.body);
   newUser.save(function(err, user) {
@@ -73,7 +74,7 @@ exports.grantAdmin = function(req, res) {
 exports.revokeAdmin = function(req, res) {
   const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
   if (!isValidId) return res.status(404).json({message: 'User id not found'});
-  
+
   User.findByIdAndUpdate(req.params.userId, {$set: {isAdmin: false}}, function(err, user) {
     if (user) {
       res.status(200).send({...user._doc, isAdmin: false});
