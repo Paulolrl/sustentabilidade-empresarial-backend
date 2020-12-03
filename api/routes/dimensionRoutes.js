@@ -54,7 +54,7 @@
  *       schema:
  *         type: string
  *         required: true
- *         description: The dimension id
+ *       description: The dimension id
  *   get:
  *     tags: [Dimension]
  *     summary: Gets an dimension by id

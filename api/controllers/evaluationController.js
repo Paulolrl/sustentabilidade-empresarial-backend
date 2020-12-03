@@ -108,7 +108,7 @@ exports.listAll = function(req, res) {
           for(let i = 0; i < evaluation.length; i++){
             let ev = evaluation[i];
             let org = await Organization.findById(ev.orgId);
-            results.push({organization: org, year: ev.year})
+            results.push({_id: ev._id, organization: org, year: ev.year})
           }
           res.status(200).json({
             total: count,

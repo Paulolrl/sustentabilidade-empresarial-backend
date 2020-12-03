@@ -8,6 +8,22 @@
  *     summary: Gets the list of registered users
  *     description: "Gets a JSON list containing all user entries 
  *       inside the database. Your authorization token must have admin access."
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: number
+ *         description: The page number
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: number
+ *         description: Number of results per page
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: Filter results by name or last name
  *     responses:
  *       200:
  *         description: List of user objects
@@ -111,7 +127,7 @@
  *       schema:
  *         type: string
  *         required: true
- *         description: The user id
+ *       description: The user id
  *   get:
  *     tags: [User]
  *     summary: Gets an user by id

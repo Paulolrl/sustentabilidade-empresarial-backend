@@ -56,10 +56,12 @@ var OrganizationsSchema = new Schema(
     },
     category: {
       type: String,
-      required: 'Category is required'
+      required: 'Category is required',
+      index: true
     },
     sector: {
-      type: String
+      type: String,
+      index: true
     },
     size: {
       type: String
@@ -82,5 +84,7 @@ OrganizationsSchema.pre('deleteOne', function (next) {
     }
   });
 });
+
+OrganizationsSchema.index({name: 'text'});
 
 module.exports = mongoose.model('Organizations', OrganizationsSchema);
