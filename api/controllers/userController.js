@@ -56,6 +56,9 @@ exports.update = function(req, res) {
 };
 
 exports.grantAdmin = function(req, res) {
+  const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
+  if (!isValidId) return res.status(404).json({message: 'User id not found'});
+
   User.findByIdAndUpdate(req.params.userId, {$set: {isAdmin: true}}, function(err, user) {
     if (user) {
       res.status(200).send({...user._doc, isAdmin: true});
@@ -68,6 +71,9 @@ exports.grantAdmin = function(req, res) {
 };
 
 exports.revokeAdmin = function(req, res) {
+  const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
+  if (!isValidId) return res.status(404).json({message: 'User id not found'});
+  
   User.findByIdAndUpdate(req.params.userId, {$set: {isAdmin: false}}, function(err, user) {
     if (user) {
       res.status(200).send({...user._doc, isAdmin: false});
