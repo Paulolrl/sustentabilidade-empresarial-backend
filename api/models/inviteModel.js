@@ -9,8 +9,8 @@ var InviteSchema = new Schema(
       index: true,
       required: true
     },
-    toUserId: {
-      type: Schema.Types.ObjectId,
+    toUserEmail: {
+      type: String,
       index: true,
       required: true
     },

@@ -10,7 +10,7 @@ exports.add = async function(req, res) {
   if (userInvited == null) return res.status(404).json({message: 'User email not found'});
 
   let body = {
-    toUserId: userInvited._id,
+    toUserEmail: req.body.email,
     fromUserId: req.user._id,
     orgId: req.user.orgId,
     seen: false,
@@ -29,7 +29,7 @@ exports.add = async function(req, res) {
 
 exports.get = function(req, res) {
   Invite.findById(req.params.inviteId, function(err, invite) {
-    if (invite && (invite.fromUserId.toString() == req.user._id || invite.toUserId.toString() == req.user._id)) {
+    if (invite && (invite.fromUserId.toString() == req.user._id || invite.toUserEmail == req.user.email)) {
       res.status(200).json(invite);
     } else if (invite == null && err == null) {
       res.status(404).json({message: 'Invite id not found'});
@@ -41,24 +41,30 @@ exports.get = function(req, res) {
 
 exports.acceptInvite = function(req, res) {
 
+  const inv = await Invite.findById(req.params.inviteId);
+  if (inv == null) return res.status(404).json({message: 'Invite id not found'});
 
-  Invite.findByIdAndUpdate(req.params.inviteId, {$set: {seen: true, accepted: true}}, function(err, invite) {
-    if (invite && invite.toUserId.toString() == req.user._id) {
-      User.findByIdAndUpdate(invite.toUserId, {$set: {orgId: invite.orgId}}, function(err, user) {
-        if (user) {
-          res.status(200).send({message: 'Invite accepted'});
-        } else if (invite == null && err == null) {
-          res.status(404).json({message: 'User id not found'});
-        } else {
-          res.status(500).json({message: 'Unable to update user', error: err});
-        }
-      });
-    } else if (invite == null && err == null) {
-      res.status(404).json({message: 'Invite id not found'});
-    } else {
-      res.status(500).json({message: 'Unable to accept invite', error: err});
-    }
-  });
+  if(inv.toUserEmail == req.user.email){
+    Invite.findByIdAndUpdate(req.params.inviteId, {$set: {seen: true, accepted: true}}, function(err, invite) {
+      if (invite) {
+        User.findOneAndUpdate({req.user._id}, {$set: {orgId: invite.orgId}}, function(err, user) {
+          if (user) {
+            res.status(200).send({message: 'Invite accepted'});
+          } else if (invite == null && err == null) {
+            res.status(404).json({message: 'User id not found'});
+          } else {
+            res.status(500).json({message: 'Unable to update user', error: err});
+          }
+        });
+      } else if (invite == null && err == null) {
+        res.status(404).json({message: 'Invite id not found'});
+      } else {
+        res.status(500).json({message: 'Unable to accept invite', error: err});
+      }
+    });
+  } else {
+    res.status(401).json({message: 'Unable to accept invite'});
+  }
 };
 
 exports.markInviteAsSeen = async function(req, res) {
@@ -66,7 +72,7 @@ exports.markInviteAsSeen = async function(req, res) {
   const inv = await Invite.findById(req.params.inviteId);
   if (inv == null) return res.status(404).json({message: 'Invite id not found'});
 
-  if(inv.toUserId.toString() == req.user._id){
+  if(inv.toUserEmail == req.user.email){
     Invite.findByIdAndUpdate(req.params.inviteId, {$set: {seen: true}}, function(err, invite) {
       if (invite) {
         res.status(200).json({...invite._doc, seen: true});
@@ -83,7 +89,7 @@ exports.markInviteAsSeen = async function(req, res) {
 };
 
 exports.listMyInvites = function(req, res) {
-  Invite.find({ $or: [{toUserId: req.user._id}, {fromUserId: req.user._id}]}, function(err, invite) {
+  Invite.find({ $or: [{toUserEmail: req.user.email}, {fromUserId: req.user._id}]}, function(err, invite) {
     if (invite) {
       res.status(200).json(invite);
     } else {
@@ -96,8 +102,7 @@ exports.delete = async function(req, res) {
   const inv = await Invite.findById(req.params.inviteId);
   if (inv == null) return res.status(404).json({message: 'Invite id not found'});
 
-
-  if(inv.toUserId.toString() == req.user._id || inv.fromUserId.toString() == req.user._id){
+  if(inv.toUserEmail == req.user.email || inv.fromUserId.toString() == req.user._id){
     Invite.deleteOne({_id: req.params.inviteId}, function(err, invite) {
       if (invite) {
         res.status(200).json({message: 'Invite successfully deleted'});
