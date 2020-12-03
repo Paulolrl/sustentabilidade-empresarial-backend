@@ -42,9 +42,41 @@ exports.update = function(req, res) {
   const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
   if (!isValidId) return res.status(404).json({message: 'User id not found'});
 
+  delete req.body.isAdmin;
+
   User.findByIdAndUpdate(req.params.userId, {$set: req.body}, function(err, user) {
     if (user) {
       res.status(200).send({...user._doc, ...req.body});
+    } else if (user == null && err == null) {
+      res.status(404).json({message: 'User id not found'});
+    } else {
+      res.status(500).json({message: 'Unable to update user', error: err});
+    }
+  });
+};
+
+exports.grantAdmin = function(req, res) {
+  const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
+  if (!isValidId) return res.status(404).json({message: 'User id not found'});
+
+  User.findByIdAndUpdate(req.params.userId, {$set: {isAdmin: true}}, function(err, user) {
+    if (user) {
+      res.status(200).send({...user._doc, isAdmin: true});
+    } else if (user == null && err == null) {
+      res.status(404).json({message: 'User id not found'});
+    } else {
+      res.status(500).json({message: 'Unable to update user', error: err});
+    }
+  });
+};
+
+exports.revokeAdmin = function(req, res) {
+  const isValidId = mongoose.Types.ObjectId.isValid(req.params.userId);
+  if (!isValidId) return res.status(404).json({message: 'User id not found'});
+  
+  User.findByIdAndUpdate(req.params.userId, {$set: {isAdmin: false}}, function(err, user) {
+    if (user) {
+      res.status(200).send({...user._doc, isAdmin: false});
     } else if (user == null && err == null) {
       res.status(404).json({message: 'User id not found'});
     } else {
