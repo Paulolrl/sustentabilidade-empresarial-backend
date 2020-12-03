@@ -36,7 +36,7 @@ exports.get = function(req, res) {
   });
 };
 
-exports.acceptInvite = function(req, res) {
+exports.acceptInvite = async function(req, res) {
 
   const inv = await Invite.findById(req.params.inviteId);
   if (inv == null) return res.status(404).json({message: 'Invite id not found'});
