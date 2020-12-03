@@ -44,7 +44,7 @@ exports.acceptInvite = function(req, res) {
   const inv = await Invite.findById(req.params.inviteId);
   if (inv == null) return res.status(404).json({message: 'Invite id not found'});
 
-  if(inv.toUserEmail == req.user.email){
+  if(inv.toUserEmail == req.user.email && !inv.accepted){
     Invite.findByIdAndUpdate(req.params.inviteId, {$set: {seen: true, accepted: true}}, function(err, invite) {
       if (invite) {
         User.findOneAndUpdate({req.user._id}, {$set: {orgId: invite.orgId}}, function(err, user) {
