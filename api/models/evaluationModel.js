@@ -106,4 +106,7 @@ var EvaluationSchema = new Schema(
   }
 );
 
+EvaluationSchema.index({'orgId': 1, 'year': 1}, {unique: true});
+
+
 module.exports = mongoose.model('Evaluation', EvaluationSchema);
