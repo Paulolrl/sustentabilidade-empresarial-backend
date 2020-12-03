@@ -9,6 +9,7 @@ var express = require('express'),
   Criteria = require('./api/models/criteriaModel'),
   User = require('./api/models/userModel'),
   Evaluation = require('./api/models/evaluationModel'),
+  Invite = require('./api/models/inviteModel'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   fs = require('fs'),
@@ -48,6 +49,9 @@ var routes = require('./api/routes/evaluationRoutes'); //importing route
 routes(app);
 
 var routes = require('./api/routes/commonRoutes'); //importing route
+routes(app);
+
+var routes = require('./api/routes/inviteRoutes'); //importing route
 routes(app);
 
 const specs = swaggerJsdoc(swagger_options);
