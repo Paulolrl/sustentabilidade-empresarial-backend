@@ -10,7 +10,7 @@
  *         ansId:
  *           type: number
  *         text:
- *           type: string         
+ *           type: string
  *
  *     AnswerGiven:
  *       type: object
@@ -92,6 +92,11 @@ var EvaluationSchema = new Schema(
     },
     answers: {
       type: [AnswerGivenSchema],
+      required: true
+    },
+    year: {
+      type: Number,
+      index: true,
       required: true
     },
     validated: Boolean

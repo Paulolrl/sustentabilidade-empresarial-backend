@@ -13,7 +13,7 @@
  *   get:
  *     tags: [Evaluation]
  *     summary: Gets the list of registered evaluations
- *     description: "Gets a JSON list containing all evaluations entries 
+ *     description: "Gets a JSON list containing all evaluations entries
  *       inside the database. Your authorization token must have admin access."
  *     responses:
  *       200:
@@ -28,7 +28,7 @@
  *         description: User does not have enough privileges
  *       500:
  *         description: Unable to list all evaluations
- * 
+ *
  *   post:
  *    tags: [Evaluation]
  *    summary: Registers an organization's evaluation
@@ -58,9 +58,9 @@
  *        description: Organization id not found
  *      500:
  *        description: Unable to register evaluation
- * 
+ *
  * /organization/{orgId}/evaluation/{evaluationId}:
- * 
+ *
  *   parameters:
  *     - in: path
  *       name: orgId
@@ -68,18 +68,18 @@
  *         type: string
  *         required: true
  *         description: The organization id
- * 
+ *
  *     - in: path
  *       name: evaluationId
  *       schema:
  *         type: string
  *         required: true
  *         description: The evaluation id
- * 
+ *
  *   get:
  *     tags: [Evaluation]
  *     summary: Gets the organization's evaluation by id
- *     description: "Gets a JSON list containing all evaluations entries 
+ *     description: "Gets a JSON list containing all evaluations entries
  *       inside the database. Your authorization token must have admin access."
  *     responses:
  *       200:
@@ -94,7 +94,7 @@
  *         description: User does not have enough privileges
  *       500:
  *         description: Unable to list all evaluations
- * 
+ *
  *   put:
  *     tags: [Evaluation]
  *     summary: Updates an organization's evaluation
@@ -120,7 +120,7 @@
  *         description: Organization or evaluation id not found
  *       500:
  *         description: Unable to update evaluation
- * 
+ *
  *   delete:
  *     tags: [Evaluation]
  *     summary: Deletes an organization's evaluation
@@ -138,9 +138,9 @@
  *         description: Organization or evaluation id not found
  *       500:
  *         description: Unable to delete evaluation
- * 
+ *
  * /evaluation/{evaluationId}:
- * 
+ *
  *   parameters:
  *     - in: path
  *       name: evaluationId
@@ -151,7 +151,7 @@
  *   get:
  *     tags: [Evaluation]
  *     summary: Gets the evaluation by id
- *     description: "Gets a JSON list containing all evaluations entries 
+ *     description: "Gets a JSON list containing all evaluations entries
  *       inside the database. Your authorization token must have admin access."
  *     responses:
  *       200:
@@ -166,23 +166,41 @@
  *         description: User does not have enough privileges
  *       500:
  *         description: Unable to list all evaluations
- * 
+ *
  * components:
  *   $ref: '../models/evaluationModel.js'
  */
 
 module.exports = function(app) {
   var evaluation = require('../controllers/evaluationController');
+  var auth = require('../auth/auth');
+
+  app.route('/organization/mine/evaluation')
+    .post(auth.verifyToken, evaluation.add)
+    .get(auth.verifyToken, evaluation.listMine);
 
   app.route('/organization/:orgId/evaluation')
-    .post(evaluation.add)
-    .get(evaluation.listAll);
+    .get(auth.verifyToken, auth.verifyAdmin, evaluation.listAllFromOrg);
+
+  app.route('/organization/mine/evaluation/:evaluationId')
+    .get(auth.verifyToken, evaluation.get)
+    .put(auth.verifyToken, evaluation.update)
+    .delete(auth.verifyToken, evaluation.delete);
 
   app.route('/organization/:orgId/evaluation/:evaluationId')
-    .get(evaluation.get)
-    .put(evaluation.update)
-    .delete(evaluation.delete);
+    .get(auth.verifyToken, auth.verifyAdmin, evaluation.get)
+    .delete(auth.verifyToken, auth.verifyAdmin, evaluation.delete);
+
+  app.route('/organization/:orgId/evaluation/:evaluationId/validate')
+    .put(auth.verifyToken, auth.verifyAdmin, evaluation.validate);
+
+  app.route('/organization/:orgId/evaluation/:evaluationId/invalidate')
+    .put(auth.verifyToken, auth.verifyAdmin, evaluation.invalidate);
 
   app.route('/evaluation/:evaluationId')
-    .get(evaluation.get)
+    .get(auth.verifyToken, auth.verifyAdmin, evaluation.get);
+
+  app.route('/evaluation')
+    .get(auth.verifyToken, auth.verifyAdmin, evaluation.listAll);
+
 };
