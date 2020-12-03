@@ -4,10 +4,7 @@ var mongoose = require('mongoose'),
   Invite = mongoose.model('Invite');
 
 exports.add = async function(req, res) {
-  let userInvited = await User.findOne({email: req.body.email});
-
   if (req.user.orgId == null) return res.status(500).json({message: 'User does not have organization associated'});
-  if (userInvited == null) return res.status(404).json({message: 'User email not found'});
 
   let body = {
     toUserEmail: req.body.email,
