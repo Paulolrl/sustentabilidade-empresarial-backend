@@ -21,6 +21,10 @@ var InviteSchema = new Schema(
     seen: {
       type: Boolean,
       required: true
+    },
+    accepted: {
+      type: Boolean,
+      require: true
     }
   },
   {

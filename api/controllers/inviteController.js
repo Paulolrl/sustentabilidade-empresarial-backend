@@ -13,7 +13,8 @@ exports.add = async function(req, res) {
     toUserId: userInvited._id,
     fromUserId: req.user._id,
     orgId: req.user.orgId,
-    seen: false
+    seen: false,
+    accepted: false
   }
 
   const newInvite = new Invite(body);
@@ -41,7 +42,7 @@ exports.get = function(req, res) {
 exports.acceptInvite = function(req, res) {
 
 
-  Invite.findByIdAndUpdate(req.params.inviteId, {$set: {seen: true}}, function(err, invite) {
+  Invite.findByIdAndUpdate(req.params.inviteId, {$set: {seen: true, accepted: true}}, function(err, invite) {
     if (invite && invite.toUserId.toString() == req.user._id) {
       User.findByIdAndUpdate(invite.toUserId, {$set: {orgId: invite.orgId}}, function(err, user) {
         if (user) {
