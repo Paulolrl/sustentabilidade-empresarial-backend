@@ -203,6 +203,6 @@ module.exports = function(app) {
   app.route('/user/:userId/grant-admin-permission')
     .put(auth.verifyToken, auth.verifyAdmin, user.grantAdmin);
 
-  app.route('/user/:userId/remove-admin-permission')
-    .put(auth.verifyToken, auth.verifyAdmin, user.removeAdmin);
+  app.route('/user/:userId/revoke-admin-permission')
+    .put(auth.verifyToken, auth.verifyAdmin, user.revokeAdmin);
 };

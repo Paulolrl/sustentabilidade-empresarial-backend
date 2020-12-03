@@ -67,7 +67,7 @@ exports.grantAdmin = function(req, res) {
   });
 };
 
-exports.removeAdmin = function(req, res) {
+exports.revokeAdmin = function(req, res) {
   User.findByIdAndUpdate(req.params.userId, {$set: {isAdmin: false}}, function(err, user) {
     if (user) {
       res.status(200).send({...user._doc, isAdmin: false});
