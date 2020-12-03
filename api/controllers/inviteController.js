@@ -44,7 +44,7 @@ exports.acceptInvite = async function(req, res) {
   if(inv.toUserEmail == req.user.email && !inv.accepted){
     Invite.findByIdAndUpdate(req.params.inviteId, {$set: {seen: true, accepted: true}}, function(err, invite) {
       if (invite) {
-        User.findOneAndUpdate({req.user._id}, {$set: {orgId: invite.orgId}}, function(err, user) {
+        User.findByIdAndUpdate(req.user._id, {$set: {orgId: invite.orgId}}, function(err, user) {
           if (user) {
             res.status(200).send({message: 'Invite accepted'});
           } else if (invite == null && err == null) {
