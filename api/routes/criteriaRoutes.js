@@ -9,7 +9,7 @@
  *       schema:
  *         type: string
  *         required: true
- *         description: The dimension id
+ *       description: The dimension id
  *   get:
  *     tags: [Criteria]
  *     summary: Gets the list of registered criteria of a dimension
@@ -66,13 +66,13 @@
  *       schema:
  *         type: string
  *         required: true
- *         description: The dimension id
+ *       description: The dimension id
  *     - in: path
  *       name: criteriaId
  *       schema:
  *         type: string
  *         required: true
- *         description: The criterion id
+ *       description: The criterion id
  *   get:
  *     tags: [Criteria]
  *     summary: Gets a dimension's criteria
@@ -144,7 +144,7 @@
  *       schema:
  *         type: string
  *         required: true
- *         description: The criterion id
+ *       description: The criterion id
  *   get:
  *     tags: [Criteria]
  *     summary: Gets a criterion by id
