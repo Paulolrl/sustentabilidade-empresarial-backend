@@ -45,7 +45,7 @@ exports.get = function(req, res) {
 };
 
 exports.listAll = function(req, res) {
-  Dimension.find({}, function(err, dimension) {
+  Dimension.find(req.query, function(err, dimension) {
     if (dimension) {
       res.status(200).json(dimension);
     } else {
