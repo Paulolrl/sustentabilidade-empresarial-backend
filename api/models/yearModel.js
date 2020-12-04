@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var YearSchema = new Schema(
   {
     year: {
-      type: String,
+      type: Number,
       required: true
     }
   },
