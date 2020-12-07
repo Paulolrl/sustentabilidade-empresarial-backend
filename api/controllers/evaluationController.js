@@ -62,7 +62,7 @@ exports.validate = async function(req, res) {
   const ev = await Evaluation.findById(req.params.evaluationId);
   if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
 
-  if (ev.orgId.toString() !== req.params.orgId.toString())
+  if (ev.orgId.toString() !== req.params.orgId)
     return res.status(404).json({message: 'Evaluation id not found for this organization'});
 
   Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: true}}, function(err, evaluation) {
@@ -90,7 +90,7 @@ exports.invalidate = async function(req, res) {
   const ev = await Evaluation.findById(req.params.evaluationId);
   if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
 
-  if (ev.orgId.toString() !== req.params.orgId.toString())
+  if (ev.orgId.toString() !== req.params.orgId)
     return res.status(404).json({message: 'Evaluation id not found for this organization'});
 
   Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: false}}, function(err, evaluation) {
@@ -135,9 +135,9 @@ exports.get = async function(req, res) {
   if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
 
   Evaluation.findById(req.params.evaluationId, function(err, evaluation) {
-    if (evaluation && evaluation.orgId.toString() === req.params.orgId.toString()) {
+    if (evaluation && evaluation.orgId.toString() === req.params.orgId) {
       res.status(200).json(evaluation);
-    } else if ((evaluation == null && err == null) || (evaluation && evaluation.orgId.toString() !== req.params.orgId.toString())) {
+    } else if ((evaluation == null && err == null) || (evaluation && evaluation.orgId.toString() !== req.params.orgId)) {
       res.status(404).json({message: 'Evaluation id not found'});
     } else {
       res.status(500).json({message: 'Unable to get evaluation', error: err});
@@ -250,7 +250,7 @@ exports.delete = async function(req, res) {
   let ev = await Evaluation.findById(req.params.evaluationId);
   if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
 
-  if(ev.orgId.toString() === req.params.orgId.toString()){
+  if(ev.orgId.toString() === req.params.orgId){
     Evaluation.deleteOne({_id: req.params.evaluationId}, function(err, evaluation) {
       if (evaluation) {
         res.status(200).json({message: 'Evaluation successfully deleted'});
