@@ -3,12 +3,12 @@
 var mongoose = require('mongoose'),
   Evaluation = mongoose.model('Evaluation');
 
-exports.add = function(req, res) {
+exports.addMine = function(req, res) {
   req.body.orgId = req.user.orgId;
 
-  if(!req.body.orgId){
-    res.status(500).json({message: 'User does not have organization associated'});
-    return;
+  // Assuming users will not have ghost organizations
+  if(!req.body.orgId) {
+    return res.status(404).json({message: 'User does not have an organization associated'});
   }
 
   const newEvaluation = new Evaluation(req.body);
@@ -21,34 +21,55 @@ exports.add = function(req, res) {
   });
 };
 
-exports.update = async function(req, res) {
-  let ev = await Evaluation.findById(req.params.evaluationId);
+exports.updateMine = async function(req, res) {
+  // Assuming users will not have ghost organizations
+  if(!req.user.orgId) {
+    return res.status(404).json({message: 'User does not have an organization associated'});
+  }
 
-  if(ev.orgId.toString() == req.user.orgId){
-    console.log('entrou');
-    req.body.orgId = req.user.orgId;
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.evaluationId);
+  if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
+
+  const ev = await Evaluation.findById(req.params.evaluationId);
+  if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
+
+  if (ev.orgId.toString() === req.user.orgId.toString()) {
     Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: req.body}, function(err, evaluation) {
       if (evaluation) {
         res.status(200).send({...evaluation._doc, ...req.body});
-      } else if (dimension == null && err == null) {
-        res.status(404).json({message: 'evaluation id not found'});
+      } else if (evaluation == null && err == null) { // Unlikely scenario because we found it before
+        res.status(404).json({message: 'Evaluation id not found'});
       } else {
         res.status(500).json({message: 'Unable to update evaluation', error: err});
       }
     });
   } else {
-    res.status(500).json({message: 'Unable to update evaluation'});
+    res.status(404).json({message: 'Evaluation id not found for this organization'});
   }
 
 };
 
-exports.validate = function(req, res) {
+exports.validate = async function(req, res) {
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.orgId);
+  if (!isValidId) return res.status(404).json({message: 'Organization id not valid'});
+
+  const org = await Organization.findById(req.params.orgId);
+  if (org == null) return res.status(404).json({message: 'Organization id not found'});
+
+  isValidId = mongoose.Types.ObjectId.isValid(req.params.evaluationId);
+  if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
+
+  const ev = await Evaluation.findById(req.params.evaluationId);
+  if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
+
+  if (ev.orgId.toString() !== req.params.orgId.toString())
+    return res.status(404).json({message: 'Evaluation id not found for this organization'});
 
   Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: true}}, function(err, evaluation) {
     if (evaluation) {
       res.status(200).send({...evaluation._doc, validated: true});
-    } else if (dimension == null && err == null) {
-      res.status(404).json({message: 'evaluation id not found'});
+    } else if (evaluation == null && err == null) { // Unlikely scenario because we found it before
+      res.status(404).json({message: 'Evaluation id not found'});
     } else {
       res.status(500).json({message: 'Unable to validate evaluation', error: err});
     }
@@ -56,23 +77,67 @@ exports.validate = function(req, res) {
 
 };
 
-exports.invalidate = function(req, res) {
+exports.invalidate = async function(req, res) {
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.orgId);
+  if (!isValidId) return res.status(404).json({message: 'Organization id not valid'});
+
+  const org = await Organization.findById(req.params.orgId);
+  if (org == null) return res.status(404).json({message: 'Organization id not found'});
+
+  isValidId = mongoose.Types.ObjectId.isValid(req.params.evaluationId);
+  if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
+
+  const ev = await Evaluation.findById(req.params.evaluationId);
+  if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
+
+  if (ev.orgId.toString() !== req.params.orgId.toString())
+    return res.status(404).json({message: 'Evaluation id not found for this organization'});
+
   Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: false}}, function(err, evaluation) {
     if (evaluation) {
       res.status(200).send({...evaluation._doc, validated: false});
-    } else if (dimension == null && err == null) {
-      res.status(404).json({message: 'evaluation id not found'});
+    } else if (evaluation == null && err == null) { // Unlikely scenario because we found it before
+      res.status(404).json({message: 'Evaluation id not found'});
     } else {
       res.status(500).json({message: 'Unable to invalidate evaluation', error: err});
     }
   });
 };
 
-exports.get = function(req, res) {
+exports.getMine = function(req, res) {
+  // Assuming users will not have ghost organizations
+  if(!req.user.orgId){
+    return res.status(404).json({message: 'User does not have an organization associated'});
+  }
+
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.evaluationId);
+  if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
+
   Evaluation.findById(req.params.evaluationId, function(err, evaluation) {
-    if (evaluation && (evaluation.orgId.toString() == req.user.orgId || req.user.isAdmin)) {
+    if (evaluation && evaluation.orgId.toString() === req.user.orgId.toString()) {
       res.status(200).json(evaluation);
     } else if (evaluation == null && err == null) {
+      res.status(404).json({message: 'Evaluation id not found for this organization'});
+    } else {
+      res.status(500).json({message: 'Unable to get evaluation', error: err});
+    }
+  });
+};
+
+exports.get = async function(req, res) {
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.orgId);
+  if (!isValidId) return res.status(404).json({message: 'Organization id not valid'});
+
+  const org = await Organization.findById(req.params.orgId);
+  if (org == null) return res.status(404).json({message: 'Organization id not found'});
+
+  isValidId = mongoose.Types.ObjectId.isValid(req.params.evaluationId);
+  if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
+
+  Evaluation.findById(req.params.evaluationId, function(err, evaluation) {
+    if (evaluation && evaluation.orgId.toString() === req.params.orgId.toString()) {
+      res.status(200).json(evaluation);
+    } else if ((evaluation == null && err == null) || (evaluation && evaluation.orgId.toString() !== req.params.orgId.toString())) {
       res.status(404).json({message: 'Evaluation id not found'});
     } else {
       res.status(500).json({message: 'Unable to get evaluation', error: err});
@@ -80,12 +145,18 @@ exports.get = function(req, res) {
   });
 };
 
-exports.listAllFromOrg = function(req, res) {
+exports.listAllFromOrg = async function(req, res) {
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.orgId);
+  if (!isValidId) return res.status(404).json({message: 'Organization id not valid'});
+
+  const org = await Organization.findById(req.params.orgId);
+  if (org == null) return res.status(404).json({message: 'Organization id not found'});
+
   Evaluation.find({...req.query, orgId: req.params.orgId}, function(err, evaluation) {
     if (evaluation) {
       res.status(200).json(evaluation);
     } else {
-      res.status(500).json({message: 'Unable to list all evaluations', error: err});
+      res.status(500).json({message: 'Unable to list all evaluations from this organization', error: err});
     }
   });
 };
@@ -125,41 +196,71 @@ exports.listAll = function(req, res) {
 };
 
 exports.listMine = function(req, res) {
+  // Assuming users will not have ghost organizations
+  if(!req.user.orgId){
+    return res.status(404).json({message: 'User does not have an organization associated'});
+  }
+
   Evaluation.find({...req.query, orgId: req.user.orgId}, function(err, evaluation) {
     if (evaluation) {
       res.status(200).json(evaluation);
     } else {
-      res.status(500).json({message: 'Unable to list all evaluations', error: err});
+      res.status(500).json({message: 'Unable to list all evaluations from this organization', error: err});
     }
   });
 };
 
-exports.delete = async function(req, res) {
-  let ev = await Evaluation.findById(req.params.evaluationId);
+exports.deleteMine = async function(req, res) {
+  // Assuming users will not have ghost organizations
+  if(!req.user.orgId){
+    return res.status(404).json({message: 'User does not have an organization associated'});
+  }
 
-  if(ev.orgId.toString() == req.user.orgId || req.user.isAdmin){
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.evaluationId);
+  if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
+
+  let ev = await Evaluation.findById(req.params.evaluationId);
+  if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
+
+  if(ev.orgId.toString() === req.user.orgId.toString()){
     Evaluation.deleteOne({_id: req.params.evaluationId}, function(err, evaluation) {
       if (evaluation) {
         res.status(200).json({message: 'Evaluation successfully deleted'});
-      } else if (dimension == null && err == null) {
+      } else if (evaluation == null && err == null) {
         res.status(404).json({message: 'Evaluation id not found'});
       } else {
         res.status(500).json({message: 'Unable to delete evaluation', error: err});
       }
     });
   } else {
-    res.status(500).json({message: 'Unable to delete evaluation'});
+    res.status(404).json({message: 'Evaluation id not found for this organization'});
   }
-
 };
 
-// TODO: remove this before production
-exports.deleteAll = function(req, res) {
-  Evaluation.deleteMany({}, function(err, evaluation) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send("All evaluation deleted!");
-    }
-  });
+exports.delete = async function(req, res) {
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.orgId);
+  if (!isValidId) return res.status(404).json({message: 'Organization id not valid'});
+
+  const org = await Organization.findById(req.params.orgId);
+  if (org == null) return res.status(404).json({message: 'Organization id not found'});
+
+  isValidId = mongoose.Types.ObjectId.isValid(req.params.evaluationId);
+  if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
+
+  let ev = await Evaluation.findById(req.params.evaluationId);
+  if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
+
+  if(ev.orgId.toString() === req.params.orgId.toString()){
+    Evaluation.deleteOne({_id: req.params.evaluationId}, function(err, evaluation) {
+      if (evaluation) {
+        res.status(200).json({message: 'Evaluation successfully deleted'});
+      } else if (evaluation == null && err == null) { // Unlikely scenario because we found it before
+        res.status(404).json({message: 'Evaluation id not found'});
+      } else {
+        res.status(500).json({message: 'Unable to delete evaluation', error: err});
+      }
+    });
+  } else {
+    res.status(404).json({message: 'Evaluation id not found for this organization'});
+  }
 };

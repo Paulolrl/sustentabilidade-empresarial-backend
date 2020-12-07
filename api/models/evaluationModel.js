@@ -4,27 +4,29 @@
  * @swagger
  * components:
  *   schemas:
- *     Answer2:
+ *     Answer:
  *       type: object
  *       properties:
  *         ansId:
  *           type: number
  *         text:
  *           type: string
- *
+ * 
  *     AnswerGiven:
  *       type: object
  *       properties:
+ *         indicatorId:
+ *           type: string
  *         answer:
- *           $ref: '#/components/schemas/Answer2'
+ *           $ref: '#/components/ListOfAnswers'
  *
  *     Evaluation:
  *       type: object
  *       properties:
  *         answers:
- *           $ref: '#/components/schemas/AnswerGiven'
- *         validated:
- *           type: boolean
+ *           $ref: '#/components/ListOfAnswersGiven'
+ *         year:
+ *           type: number
  *
  *   AnswerMongo:
  *     allOf:
@@ -51,9 +53,34 @@
  *             type: string
  *           __v:
  *             type: number
+ *           validated:
+ *             type: boolean
  *           orgId:
  *             type: string
- *
+ * 
+ *   EvaluationAll:
+ *     type: object
+ *     properties:
+ *       evaluationId:
+ *         type: string
+ *       organization:
+ *         $ref: '#/components/schemas/Organization'
+ * 
+ *   ListOfEvaluationsAll:
+ *     type: array
+ *     items:
+ *       $ref: '#/components/EvaluationAll'
+ * 
+ *   ListOfAnswersGiven:
+ *     type: array
+ *     items:
+ *       $ref: '#/components/schemas/AnswerGiven'
+ * 
+ *   ListOfAnswers:
+ *     type: array
+ *     items:
+ *       $ref: '#/components/schemas/Answer'
+ * 
  *   ListOfEvaluations:
  *     type: array
  *     items:
