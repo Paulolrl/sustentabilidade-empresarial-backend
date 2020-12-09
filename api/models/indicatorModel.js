@@ -6,14 +6,6 @@ var Schema = mongoose.Schema;
  * @swagger
  * components:
  *   schemas:
- *     Answer:
- *       type: object
- *       properties:
- *         answer:
- *           type: string
- *         points:
- *           type: number
- *
  *     Question:
  *       type: object
  *       properties:
@@ -21,8 +13,15 @@ var Schema = mongoose.Schema;
  *           type: string
  *         type:
  *           type: number
- *         answer:
- *           $ref: '#/components/schemas/Answer'
+ *         options:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               text:
+ *                 type: string
+ *               points:
+ *                 type: number
  *
  *     Indicator:
  *       type: object
@@ -42,22 +41,6 @@ var Schema = mongoose.Schema;
  *         question:
  *           $ref: '#/components/schemas/Question'
  *
- *   AnswerMongo:
- *     allOf:
- *       - $ref: '#/components/schemas/Answer'
- *       - type: object
- *         properties:
- *           _id:
- *             type: string
- *
- *   QuestionMongo:
- *     allOf:
- *       - $ref: '#/components/schemas/Question'
- *       - type: object
- *         properties:
- *           _id:
- *             type: string
- *
  *   IndicatorMongo:
  *     allOf:
  *       - $ref: '#/components/schemas/Indicator'
@@ -75,18 +58,6 @@ var Schema = mongoose.Schema;
  *     items:
  *       $ref: '#/components/IndicatorMongo'
  */
-var AnswerSchema = new Schema(
-  {
-    answer: {
-      type: String,
-      // required: 'Enter answer'
-    },
-    points: {
-      type: Number,
-      // required: 'Enter number of points'
-    }
-  }
-);
 
 var QuestionsSchema = new Schema(
   {
@@ -98,7 +69,16 @@ var QuestionsSchema = new Schema(
       type: String,
       // required: 'Enter question type'
     },
-    answer: [AnswerSchema]
+    options: [{
+      text: {
+        type: String,
+        // required: 'Enter option text'
+      },
+      points: {
+        type: Number,
+        // required: 'Enter number of points'
+      }
+    }]
   },
 );
 
