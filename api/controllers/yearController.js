@@ -45,7 +45,7 @@ exports.get = function(req, res) {
 };
 
 exports.listAll = function(req, res) {
-  Year.find({}, function(err, year) {
+  Year.find({}).sort('year').exec(function(err, year) {
     if (year) {
       res.status(200).json(year);
     } else {

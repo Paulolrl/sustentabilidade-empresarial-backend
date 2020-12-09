@@ -38,4 +38,26 @@ var YearSchema = new Schema(
   }
 );
 
+YearSchema.pre('deleteOne', function (next) {
+  const yearId = this.getQuery()['_id'];
+
+  mongoose.model('Year').findById(yearId, function (err, year) {
+    if (err) {
+      console.log(`[error] ${err}`);
+      next(err);
+    } else {
+      mongoose.model('Dimension').deleteMany({year: year.year}, function (err, result) {
+        if (err) {
+          console.log(`[error] ${err}`);
+          next(err);
+        } else {
+          console.log('success');
+          next();
+        }
+      });
+    }
+  });
+
+});
+
 module.exports = mongoose.model('Year', YearSchema);
