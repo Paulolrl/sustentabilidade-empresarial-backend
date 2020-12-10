@@ -6,14 +6,9 @@ let rawdata = fs.readFileSync('api/nodemailer/gmailPassword.json');
 let gmail = JSON.parse(rawdata);
 
 module.exports = {
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
+    service: "Gmail",
     auth: {
       user: "sustentabilidade.unicamp@gmail.com",
       pass: gmail.password
-    },
-    tls: {
-      rejectUnauthorized: false
     }
 };
