@@ -1,10 +1,17 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-  Invite = mongoose.model('Invite');
+  nodemailer = require('nodemailer'),
+  transporterConfig = require('../nodemailer/transporterConfig'),
+  Invite = mongoose.model('Invite'),
+  Organization = mongoose.model('Organizations');
+
 
 exports.add = async function(req, res) {
-  if (req.user.orgId == null) return res.status(500).json({message: 'User does not have organization associated'});
+  const org = await Organization.findById(req.user.orgId);
+  if (org == null) {
+    return res.status(404).json({message: 'Organization id not found'});
+  }
 
   let body = {
     toUserEmail: req.body.email,
@@ -17,6 +24,41 @@ exports.add = async function(req, res) {
   const newInvite = new Invite(body);
   newInvite.save(function(err, invite) {
     if (invite) {
+      const transporter = nodemailer.createTransport(transporterConfig);
+
+      // Verify connection configuration.
+      transporter.verify(function(error, success) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Server is ready to take our messages");
+        }
+      });
+
+      const message = {
+        from: 'Sustentabilidade Corporativa HIDS <sustentabilidade.unicamp@gmail.com>',
+        to: req.body.email,
+        subject: 'Convite Para Colaborar Em Organização',
+        html: `
+          <p>
+            Você foi convidado por ` + req.email + ` para colaborar com a 
+            avaliação da organização <b>` + org.name + `</b> no sistema de 
+            avaliação de sustentabilidade corporativa do HIDS (Hub Internacional 
+            para o Desenvolvimento Sustentável). 
+          </p>
+          <p>
+            Para começar, <a href="#">acesse o sistema</a>.
+          </p>
+        `
+      };
+
+      transporter.sendMail(message, (err, info) => {
+        if (err) {
+            return console.log(err);
+        }
+        console.log('Message sent: %s', info.messageId);
+      });
+
       res.status(200).json(invite);
     } else {
       res.status(500).json({message: 'Unable to register invite', error: err});
