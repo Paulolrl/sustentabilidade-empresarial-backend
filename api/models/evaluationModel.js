@@ -11,7 +11,7 @@
  *           type: number
  *         text:
  *           type: string
- * 
+ *
  *     AnswerGiven:
  *       type: object
  *       properties:
@@ -57,7 +57,7 @@
  *             type: boolean
  *           orgId:
  *             type: string
- * 
+ *
  *   EvaluationAll:
  *     type: object
  *     properties:
@@ -65,22 +65,22 @@
  *         type: string
  *       organization:
  *         $ref: '#/components/schemas/Organization'
- * 
+ *
  *   ListOfEvaluationsAll:
  *     type: array
  *     items:
  *       $ref: '#/components/EvaluationAll'
- * 
+ *
  *   ListOfAnswersGiven:
  *     type: array
  *     items:
  *       $ref: '#/components/schemas/AnswerGiven'
- * 
+ *
  *   ListOfAnswers:
  *     type: array
  *     items:
  *       $ref: '#/components/schemas/Answer'
- * 
+ *
  *   ListOfEvaluations:
  *     type: array
  *     items:
@@ -105,7 +105,10 @@ var AnswerGivenSchema = new Schema(
       required: true,
       index: true
     },
-    answer: [AnswerSchema]
+    answer: [AnswerSchema],
+    evidence: {
+      type: String
+    }
   }
 );
 
