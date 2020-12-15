@@ -180,7 +180,7 @@
  *
  *   delete:
  *     tags: [User]
- *     summary: Deletes a user by id
+ *     summary: Deletes an user by id
  *     description: "Deletes an user object by its id.
  *       Your authorization token must have admin access."
  *     responses:
