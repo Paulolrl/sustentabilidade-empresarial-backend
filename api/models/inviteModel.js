@@ -2,6 +2,45 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Invite:
+ *       type: object
+ *       properties:
+ *         fromUserId:
+ *           type: string
+ *         toUserEmail:
+ *           type: string
+ *         orgId:
+ *           type: string
+ *         seen:
+ *           type: boolean
+ *         accepted:
+ *           type: boolean
+ *
+ *   InvitePost:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ * 
+ *   InviteMongo:
+ *     allOf:
+ *       - $ref: '#/components/schemas/Invite'
+ *       - type: object
+ *         properties:
+ *           _id:
+ *             type: string
+ *           __v:
+ *             type: number
+ *
+ *   ListOfinvites:
+ *     type: array
+ *     items:
+ *       $ref: '#/components/InviteMongo'
+ */
 var InviteSchema = new Schema(
   {
     fromUserId: {
