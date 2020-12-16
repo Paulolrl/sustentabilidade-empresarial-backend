@@ -36,7 +36,7 @@ var Schema = mongoose.Schema;
  *           __v:
  *             type: number
  *
- *   ListOfinvites:
+ *   ListOfInvites:
  *     type: array
  *     items:
  *       $ref: '#/components/InviteMongo'
