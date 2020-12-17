@@ -48,6 +48,14 @@
  *         description: Unable to send and/or add invite
  * 
  * /organization/mine/invite/{inviteId}:
+ *   parameters:
+ *     - in: path
+ *       name: inviteId
+ *       schema:
+ *         type: string
+ *         required: true
+ *       description: The invite id
+ * 
  *   get:
  *     tags: [Invite]
  *     summary: Gets an user's invite by id
@@ -82,6 +90,14 @@
  *         description: Unable to delete invite
  * 
  * /organization/mine/invite/{inviteId}/mark:
+ *   parameters:
+ *     - in: path
+ *       name: inviteId
+ *       schema:
+ *         type: string
+ *         required: true
+ *       description: The invite id
+ * 
  *   put:
  *     tags: [Invite]
  *     summary: Marks an invite as seen
@@ -102,6 +118,14 @@
  *         description: Unable to get invite
  * 
  * /organization/mine/invite/{inviteId}/accept:
+ *   parameters:
+ *     - in: path
+ *       name: inviteId
+ *       schema:
+ *         type: string
+ *         required: true
+ *       description: The invite id
+ * 
  *   put:
  *     tags: [Invite]
  *     summary: Accepts an invite
