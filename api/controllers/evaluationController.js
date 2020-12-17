@@ -11,6 +11,8 @@ exports.addMine = function(req, res) {
     return res.status(404).json({message: 'User does not have an organization associated'});
   }
 
+  req.body.finished = false;
+
   const newEvaluation = new Evaluation(req.body);
   newEvaluation.save(function(err, evaluation) {
     if (evaluation) {
@@ -76,6 +78,27 @@ exports.validate = async function(req, res) {
   });
 
 };
+
+exports.finish = async function(req, res) {
+  let isValidId = mongoose.Types.ObjectId.isValid(req.params.evaluationId);
+  if (!isValidId) return res.status(404).json({message: 'Evaluation id not valid'});
+
+  const ev = await Evaluation.findById(req.params.evaluationId);
+  if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
+
+  if (ev.orgId.toString() !== req.user.orgId.toString())
+    return res.status(404).json({message: 'Evaluation id not found for this organization'});
+
+  Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {finished: true}}, function(err, evaluation) {
+    if (evaluation) {
+      res.status(200).send({...evaluation._doc, finished: true});
+    } else if (evaluation == null && err == null) { // Unlikely scenario because we found it before
+      res.status(404).json({message: 'Evaluation id not found'});
+    } else {
+      res.status(500).json({message: 'Unable to finish evaluation', error: err});
+    }
+  });
+}
 
 exports.invalidate = async function(req, res) {
   let isValidId = mongoose.Types.ObjectId.isValid(req.params.orgId);
@@ -179,7 +202,13 @@ exports.listAll = function(req, res) {
           for(let i = 0; i < evaluation.length; i++){
             let ev = evaluation[i];
             let org = await Organization.findById(ev.orgId);
-            results.push({_id: ev._id, organization: org, year: ev.year, validated: ev.validated})
+            results.push({
+              _id: ev._id,
+              organization: org,
+              year: ev.year,
+              validated: ev.validated,
+              finished: ev.finished
+            })
           }
           res.status(200).json({
             total: count,

@@ -21,7 +21,7 @@
  *         description: This user does not have a organization
  *       500:
  *         description: Unable to get user's evaluation
- * 
+ *
  *   post:
  *    tags: [Evaluation]
  *    summary: Registers an organization's evaluation
@@ -48,7 +48,7 @@
  *        description: This user does not have a organization
  *      500:
  *        description: Unable to register evaluation
- * 
+ *
  * /organization/{orgId}/evaluation/:
  *   parameters:
  *     - in: path
@@ -152,7 +152,7 @@
  *         description: User do not have a organization or this evaluation does not exists
  *       500:
  *         description: Unable to delete evaluation
- * 
+ *
  * /organization/{orgId}/evaluation/{evaluationId}:
  *   parameters:
  *     - in: path
@@ -224,7 +224,7 @@
  *         type: string
  *         required: true
  *         description: The evaluation id
- * 
+ *
  *   put:
  *     tags: [Evaluation]
  *     summary: Validates an organization's evaluation by id
@@ -247,7 +247,7 @@
  *         description: Organization or evaluation does not exist
  *       500:
  *         description: Unable to validate evaluation
- * 
+ *
  * /organization/{orgId}/evaluation/{evaluationId}/invalidate:
  *   parameters:
  *     - in: path
@@ -263,7 +263,7 @@
  *         type: string
  *         required: true
  *         description: The evaluation id
- * 
+ *
  *   put:
  *     tags: [Evaluation]
  *     summary: Validates an organization's evaluation by id
@@ -286,7 +286,7 @@
  *         description: Organization or evaluation does not exist
  *       500:
  *         description: Unable to validate evaluation
- * 
+ *
  * /evaluation:
  *   get:
  *     tags: [Evaluation]
@@ -305,7 +305,7 @@
  *         description: User does not have enough privileges
  *       500:
  *         description: Unable to get all evaluations
- * 
+ *
  * components:
  *   $ref: '../models/evaluationModel.js'
  */
@@ -325,6 +325,10 @@ module.exports = function(app) {
     .get(auth.verifyToken, evaluation.getMine)
     .put(auth.verifyToken, evaluation.updateMine)
     .delete(auth.verifyToken, evaluation.deleteMine);
+
+  app.route('/organization/mine/evaluation/:evaluationId/finish')
+    .put(auth.verifyToken, evaluation.finish);
+
 
   app.route('/organization/:orgId/evaluation/:evaluationId')
     .get(auth.verifyToken, auth.verifyAdmin, evaluation.get)

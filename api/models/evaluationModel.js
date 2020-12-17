@@ -129,7 +129,8 @@ var EvaluationSchema = new Schema(
       index: true,
       required: true
     },
-    validated: Boolean
+    validated: Boolean,
+    finished: Boolean
   },
   {
     collection: 'Evaluation'
