@@ -47,6 +47,80 @@
  *       500:
  *         description: Unable to send and/or add invite
  * 
+ * /organization/mine/invite/{inviteId}:
+ *   get:
+ *     tags: [Invite]
+ *     summary: Gets an user's invite by id
+ *     description: "Gets an user's invite object by its id from 
+ *       inside the database."
+ *     responses:
+ *       200:
+ *         description: The invite object matching the id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#components/InviteMongo'
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: Invite id not found
+ *       500:
+ *         description: Unable to get invite
+ * 
+ *   delete:
+ *     tags: [Invite]
+ *     summary: Deletes a invite by id
+ *     description: "Deletes an invite object by its id."
+ *     responses:
+ *       200:
+ *         description: Delete was successful
+ *       401:
+ *         description: Authentication with token failed
+ *       404:
+ *         description: invite id not found
+ *       500:
+ *         description: Unable to delete invite
+ * 
+ * /organization/mine/invite/{inviteId}/mark:
+ *   put:
+ *     tags: [Invite]
+ *     summary: Marks an invite as seen
+ *     description: "Gets an user's invite object by its id from 
+ *       inside the database, and marks it as seen. This user's email must be the one the invite was for."
+ *     responses:
+ *       200:
+ *         description: The updated invite object matching the id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#components/InviteMongo'
+ *       401:
+ *         description: Authentication with token failed or this invite is not for this user
+ *       404:
+ *         description: Invite id not found
+ *       500:
+ *         description: Unable to get invite
+ * 
+ * /organization/mine/invite/{inviteId}/accept:
+ *   put:
+ *     tags: [Invite]
+ *     summary: Accepts an invite
+ *     description: "Gets an user's invite object by its id from 
+ *       inside the database, and accepts it. This user's email must be the one the invite was for."
+ *     responses:
+ *       200:
+ *         description: The updated invite object matching the id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#components/InviteMongo'
+ *       401:
+ *         description: Authentication with token failed or this invite is not for this user
+ *       404:
+ *         description: Invite id not found
+ *       500:
+ *         description: Unable to get invite
+ * 
  * components:
  *   $ref: '../models/inviteModel.js'
  */
