@@ -59,6 +59,7 @@ exports.verifyToken = (req, res, next) => {
       .then(async function (decodedToken) {
           try {
             req.uid = decodedToken.uid;
+            req.email = decodedToken.email;
             let user = await userController.getByUid(req.uid);
             req.user = user;
             return next();

@@ -106,3 +106,4 @@ dist
 # Sensitive info
 config.json
 sustentabilidade-empresarial-firebase-admin*.json
+api/nodemailer/gmailPassword.json

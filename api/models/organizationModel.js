@@ -80,7 +80,14 @@ OrganizationsSchema.pre('deleteOne', function (next) {
       next(err);
     } else {
       console.log('success');
-      next();
+      mongoose.model('Evaluation').deleteMany({orgId}, function (err, result) {
+        if(err){
+          console.log(`[error] ${err}`);
+          next(err);
+        } else {
+          next();
+        }
+      });
     }
   });
 });
