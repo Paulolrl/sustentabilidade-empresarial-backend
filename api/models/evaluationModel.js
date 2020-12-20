@@ -129,6 +129,7 @@ var EvaluationSchema = new Schema(
       index: true,
       required: true
     },
+    lastEditEmail: String,
     validated: Boolean,
     finished: Boolean
   },
