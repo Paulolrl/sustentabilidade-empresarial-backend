@@ -41,10 +41,10 @@ exports.add = async function(req, res) {
         subject: 'Convite Para Colaborar Em Organização',
         html: `
           <p>
-            Você foi convidado por ` + req.email + ` para colaborar com a 
-            avaliação da organização <b>` + org.name + `</b> no sistema de 
-            avaliação de sustentabilidade corporativa do HIDS (Hub Internacional 
-            para o Desenvolvimento Sustentável). 
+            Você foi convidado por ` + req.email + ` para colaborar com a
+            avaliação da organização <b>` + org.name + `</b> no sistema de
+            avaliação de sustentabilidade corporativa do HIDS (Hub Internacional
+            para o Desenvolvimento Sustentável).
           </p>
           <p>
             Para começar, <a href="#">acesse o sistema</a>.
@@ -128,9 +128,20 @@ exports.markInviteAsSeen = async function(req, res) {
 };
 
 exports.listMyInvites = function(req, res) {
-  Invite.find({ $or: [{toUserEmail: req.user.email}, {fromUserId: req.user._id}]}, function(err, invite) {
+  Invite.find({ $or: [{toUserEmail: req.user.email}, {fromUserId: req.user._id}]}, async function(err, invite) {
     if (invite) {
-      res.status(200).json(invite);
+      let results = [];
+      for(let i = 0; i < invite.length; i++){
+        let inv = invite[i];
+        let org = await Organization.findById(inv.orgId);
+        let fromUser = await User.findById(inv.fromUserId);
+        results.push({
+          ...inv._doc,
+          fromUserEmail: fromUser.email,
+          organization: org
+        });
+      }
+      res.status(200).json(results);
     } else {
       res.status(500).json({message: 'Unable to list all dimensions', error: err});
     }

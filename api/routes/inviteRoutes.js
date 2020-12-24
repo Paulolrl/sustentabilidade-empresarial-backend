@@ -2,24 +2,7 @@
 
 /**
  * @swagger
- * /organization/mine/invite:
- *   get:
- *     tags: [Invite]
- *     summary: Gets the list of sent invites
- *     description: "Gets a JSON list containing all invite entries sent from this user
- *       inside the database. The invites are related to this user's organization"
- *     responses:
- *       200:
- *         description: List of invite objects
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#components/ListOfInvites'
- *       401:
- *         description: No authorization token provided or authentication failed
- *       500:
- *         description: Unable to list all invites
- * 
+ * /mine/invite:
  *   post:
  *     tags: [Invite]
  *     summary: Sends an invite
@@ -46,8 +29,25 @@
  *         description: This user does not have an organization
  *       500:
  *         description: Unable to send and/or add invite
- * 
- * /organization/mine/invite/{inviteId}:
+ * /organization/mine/invite:
+ *   get:
+ *     tags: [Invite]
+ *     summary: Gets the list of sent invites
+ *     description: "Gets a JSON list containing all invite entries sent from this user
+ *       inside the database. The invites are related to this user's organization"
+ *     responses:
+ *       200:
+ *         description: List of invite objects
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#components/ListOfInvites'
+ *       401:
+ *         description: No authorization token provided or authentication failed
+ *       500:
+ *         description: Unable to list all invites
+ *
+ * /invite/{inviteId}:
  *   parameters:
  *     - in: path
  *       name: inviteId
@@ -55,11 +55,11 @@
  *         type: string
  *         required: true
  *       description: The invite id
- * 
+ *
  *   get:
  *     tags: [Invite]
  *     summary: Gets an user's invite by id
- *     description: "Gets an user's invite object by its id from 
+ *     description: "Gets an user's invite object by its id from
  *       inside the database."
  *     responses:
  *       200:
@@ -74,7 +74,7 @@
  *         description: Invite id not found
  *       500:
  *         description: Unable to get invite
- * 
+ *
  *   delete:
  *     tags: [Invite]
  *     summary: Deletes a invite by id
@@ -88,8 +88,8 @@
  *         description: invite id not found
  *       500:
  *         description: Unable to delete invite
- * 
- * /organization/mine/invite/{inviteId}/mark:
+ *
+ * /invite/{inviteId}/mark:
  *   parameters:
  *     - in: path
  *       name: inviteId
@@ -97,11 +97,11 @@
  *         type: string
  *         required: true
  *       description: The invite id
- * 
+ *
  *   put:
  *     tags: [Invite]
  *     summary: Marks an invite as seen
- *     description: "Gets an user's invite object by its id from 
+ *     description: "Gets an user's invite object by its id from
  *       inside the database, and marks it as seen. This user's email must be the one the invite was for."
  *     responses:
  *       200:
@@ -116,8 +116,8 @@
  *         description: Invite id not found
  *       500:
  *         description: Unable to get invite
- * 
- * /organization/mine/invite/{inviteId}/accept:
+ *
+ * //invite/{inviteId}/accept:
  *   parameters:
  *     - in: path
  *       name: inviteId
@@ -125,11 +125,11 @@
  *         type: string
  *         required: true
  *       description: The invite id
- * 
+ *
  *   put:
  *     tags: [Invite]
  *     summary: Accepts an invite
- *     description: "Gets an user's invite object by its id from 
+ *     description: "Gets an user's invite object by its id from
  *       inside the database, and accepts it. This user's email must be the one the invite was for."
  *     responses:
  *       200:
@@ -144,7 +144,7 @@
  *         description: Invite id not found
  *       500:
  *         description: Unable to get invite
- * 
+ *
  * components:
  *   $ref: '../models/inviteModel.js'
  */
@@ -152,17 +152,19 @@ module.exports = function(app) {
   var invite = require('../controllers/inviteController');
   var auth = require('../auth/auth');
 
-  app.route('/organization/mine/invite')
+  app.route('/invite')
     .get(auth.verifyToken, invite.listMyInvites)
+
+  app.route('/organization/mine/invite')
     .post(auth.verifyToken, invite.add);
 
-  app.route('/organization/mine/invite/:inviteId')
+  app.route('/invite/:inviteId')
     .get(auth.verifyToken, invite.get)
     .delete(auth.verifyToken, invite.delete);
 
-  app.route('/organization/mine/invite/:inviteId/mark')
-      .put(auth.verifyToken, invite.markInviteAsSeen);
+  app.route('/invite/:inviteId/mark')
+    .put(auth.verifyToken, invite.markInviteAsSeen);
 
-  app.route('/organization/mine/invite/:inviteId/accept')
-      .put(auth.verifyToken, invite.acceptInvite);
+  app.route('/invite/:inviteId/accept')
+    .put(auth.verifyToken, invite.acceptInvite);
 };
