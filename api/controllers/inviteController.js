@@ -67,9 +67,11 @@ exports.add = async function(req, res) {
 };
 
 exports.get = function(req, res) {
-  Invite.findById(req.params.inviteId, function(err, invite) {
+  Invite.findById(req.params.inviteId, async function(err, invite) {
     if (invite && (invite.fromUserId.toString() == req.user._id || invite.toUserEmail == req.user.email)) {
-      res.status(200).json(invite);
+      let org = await Organization.findById(invite.orgId);
+      let fromUser = await User.findById(invite.fromUserId);
+      res.status(200).json({...invite._doc, organization: org, fromUserEmail: fromUser.email});
     } else if (invite == null && err == null) {
       res.status(404).json({message: 'Invite id not found'});
     } else {
