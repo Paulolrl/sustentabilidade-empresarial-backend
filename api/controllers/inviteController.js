@@ -88,7 +88,7 @@ exports.acceptInvite = async function(req, res) {
       if (invite) {
         User.findByIdAndUpdate(req.user._id, {$set: {orgId: invite.orgId}}, function(err, user) {
           if (user) {
-            res.status(200).send({message: 'Invite accepted'});
+            res.status(200).send({...invite._doc, seen: true, accepted: true});
           } else if (invite == null && err == null) {
             res.status(404).json({message: 'User id not found'});
           } else {
