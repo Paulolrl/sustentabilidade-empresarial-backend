@@ -19,7 +19,6 @@
     "firebase": "^8.0.0",
     "firebase-admin": "^9.3.0",
     "mongoose": "^5.10.9",
-    "nodemailer": "^6.4.16",
     "swagger-jsdoc": "^5.0.0",
     "swagger-ui-express": "^4.1.4"
   }
