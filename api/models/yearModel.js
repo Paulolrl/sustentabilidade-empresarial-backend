@@ -30,7 +30,8 @@ var YearSchema = new Schema(
   {
     year: {
       type: Number,
-      required: true
+      required: true,
+      unique: true
     }
   },
   {
