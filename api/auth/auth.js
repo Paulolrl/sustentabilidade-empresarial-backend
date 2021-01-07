@@ -61,8 +61,12 @@ exports.verifyToken = (req, res, next) => {
             req.uid = decodedToken.uid;
             req.email = decodedToken.email;
             let user = await userController.getByUid(req.uid);
-            req.user = user;
-            return next();
+            if(user && !decodedToken.email_verified) {
+              res.status(401).json({message: 'Email not verified'});
+            } else {
+              req.user = user;
+              return next();
+            }
           } catch(e) {
             res.status(401).json({message: 'Unable to authenticate token', error: e});
           }

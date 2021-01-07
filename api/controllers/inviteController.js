@@ -37,10 +37,10 @@ exports.add = async function(req, res) {
         `,
         html: `
           <p>
-            Você foi convidado por ` + req.email + ` para colaborar com a 
-            avaliação da organização <b>` + org.name + `</b> no sistema de 
-            avaliação de sustentabilidade corporativa do HIDS (Hub Internacional 
-            para o Desenvolvimento Sustentável). 
+            Você foi convidado por ` + req.email + ` para colaborar com a
+            avaliação da organização <b>` + org.name + `</b> no sistema de
+            avaliação de sustentabilidade corporativa do HIDS (Hub Internacional
+            para o Desenvolvimento Sustentável).
           </p>
           <p>
             Para começar, <a href=` + loginURL + `>acesse o sistema</a>.
@@ -58,9 +58,11 @@ exports.add = async function(req, res) {
 };
 
 exports.get = function(req, res) {
-  Invite.findById(req.params.inviteId, function(err, invite) {
+  Invite.findById(req.params.inviteId, async function(err, invite) {
     if (invite && (invite.fromUserId.toString() == req.user._id || invite.toUserEmail == req.user.email)) {
-      res.status(200).json(invite);
+      let org = await Organization.findById(invite.orgId);
+      let fromUser = await User.findById(invite.fromUserId);
+      res.status(200).json({...invite._doc, organization: org, fromUserEmail: fromUser.email});
     } else if (invite == null && err == null) {
       res.status(404).json({message: 'Invite id not found'});
     } else {
@@ -79,7 +81,7 @@ exports.acceptInvite = async function(req, res) {
       if (invite) {
         User.findByIdAndUpdate(req.user._id, {$set: {orgId: invite.orgId}}, function(err, user) {
           if (user) {
-            res.status(200).send({message: 'Invite accepted'});
+            res.status(200).send({...invite._doc, seen: true, accepted: true});
           } else if (invite == null && err == null) {
             res.status(404).json({message: 'User id not found'});
           } else {
@@ -119,9 +121,20 @@ exports.markInviteAsSeen = async function(req, res) {
 };
 
 exports.listMyInvites = function(req, res) {
-  Invite.find({ $or: [{toUserEmail: req.user.email}, {fromUserId: req.user._id}]}, function(err, invite) {
+  Invite.find({ $or: [{toUserEmail: req.user.email}, {fromUserId: req.user._id}]}, async function(err, invite) {
     if (invite) {
-      res.status(200).json(invite);
+      let results = [];
+      for(let i = 0; i < invite.length; i++){
+        let inv = invite[i];
+        let org = await Organization.findById(inv.orgId);
+        let fromUser = await User.findById(inv.fromUserId);
+        results.push({
+          ...inv._doc,
+          fromUserEmail: fromUser.email,
+          organization: org
+        });
+      }
+      res.status(200).json(results);
     } else {
       res.status(500).json({message: 'Unable to list all dimensions', error: err});
     }
