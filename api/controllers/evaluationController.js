@@ -75,8 +75,8 @@ exports.validate = async function(req, res) {
     if (evaluation) {
       const evaluationURL = req.protocol + '://' + req.get('host') + '/organization/mine/evaluation';
       const message = {
-        from: 'Sustentabilidade Corporativa HIDS <sustentabilidade.unicamp@gmail.com>',
         to: evaluation.lastEditEmail,
+        from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
         subject: 'A avaliação de sua organização foi validada',
         text: `
           A avaliação editada por você para a sua organização foi validada.
@@ -145,8 +145,8 @@ exports.invalidate = async function(req, res) {
     if (evaluation) {
       const evaluationURL = req.protocol + '://' + req.get('host') + '/organization/mine/evaluation';
       const message = {
-        from: 'Sustentabilidade Corporativa HIDS <sustentabilidade.unicamp@gmail.com>',
         to: evaluation.lastEditEmail,
+        from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
         subject: 'A avaliação de sua organização foi invalidada',
         text: `
           A avaliação editada por você para a sua organização foi invalidada.

@@ -25,8 +25,8 @@ exports.add = async function(req, res) {
     if (invite) {
       const loginURL = req.protocol + '://' + req.get('host') + '/login';
       const message = {
-        from: 'Sustentabilidade Corporativa HIDS <sustentabilidade.unicamp@gmail.com>',
         to: req.body.email,
+        from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
         subject: 'Convite Para Colaborar Em Organização',
         text: `
           Você foi convidado por ` + req.email + ` para colaborar com a 
