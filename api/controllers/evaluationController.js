@@ -73,7 +73,7 @@ exports.validate = async function(req, res) {
 
   Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: true}}, async function(err, evaluation) {
     if (evaluation) {
-      const evaluationURL = req.protocol + '://' + req.get('host') + '/organization/mine/evaluation';
+      const evaluationURL = req.protocol + '://' + req.hostname + ':3001' + '/organization/mine/evaluation';
       const message = {
         to: evaluation.lastEditEmail,
         from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
@@ -143,7 +143,7 @@ exports.invalidate = async function(req, res) {
 
   Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: false}}, async function(err, evaluation) {
     if (evaluation) {
-      const evaluationURL = req.protocol + '://' + req.get('host') + '/organization/mine/evaluation';
+      const evaluationURL = req.protocol + '://' + req.hostname + ':3001' + '/organization/mine/evaluation';
       const message = {
         to: evaluation.lastEditEmail,
         from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',

@@ -23,7 +23,7 @@ exports.add = async function(req, res) {
   const newInvite = new Invite(body);
   newInvite.save(async function(err, invite) {
     if (invite) {
-      const loginURL = req.protocol + '://' + req.get('host') + '/login';
+      const loginURL = req.protocol + '://' + req.hostname + ':3001' + '/login';
       const message = {
         to: req.body.email,
         from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
