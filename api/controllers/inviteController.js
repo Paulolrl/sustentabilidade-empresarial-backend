@@ -1,8 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-  nodemailer = require('nodemailer'),
-  transporterConfig = require('../nodemailer/transporterConfig'),
+  email = require('./emailController'),
   Invite = mongoose.model('Invite'),
   Organization = mongoose.model('Organizations');
 
@@ -22,23 +21,20 @@ exports.add = async function(req, res) {
   }
 
   const newInvite = new Invite(body);
-  newInvite.save(function(err, invite) {
+  newInvite.save(async function(err, invite) {
     if (invite) {
-      const transporter = nodemailer.createTransport(transporterConfig);
-
-      // Verify connection configuration.
-      transporter.verify(function(error, success) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Server is ready to take our messages");
-        }
-      });
-
+      const loginURL = req.protocol + '://' + req.hostname + ':3001' + '/login';
       const message = {
-        from: 'Sustentabilidade Corporativa HIDS <sustentabilidade.unicamp@gmail.com>',
         to: req.body.email,
+        from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
         subject: 'Convite Para Colaborar Em Organização',
+        text: `
+          Você foi convidado por ` + req.email + ` para colaborar com a 
+          avaliação da organização ` + org.name + ` no sistema de avaliação de 
+          sustentabilidade corporativa do HIDS (Hub Internacional para o 
+          Desenvolvimento Sustentável). 
+          Para começar, acesse o sistema em ` + loginURL + `.
+        `,
         html: `
           <p>
             Você foi convidado por ` + req.email + ` para colaborar com a
@@ -47,17 +43,12 @@ exports.add = async function(req, res) {
             para o Desenvolvimento Sustentável).
           </p>
           <p>
-            Para começar, <a href="#">acesse o sistema</a>.
+            Para começar, <a href=` + loginURL + `>acesse o sistema</a>.
           </p>
         `
       };
 
-      transporter.sendMail(message, (err, info) => {
-        if (err) {
-            return console.log(err);
-        }
-        console.log('Message sent: %s', info.messageId);
-      });
+      await email.sendMail(message);
 
       res.status(200).json(invite);
     } else {

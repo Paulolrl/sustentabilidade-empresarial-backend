@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+  email = require('./emailController'),
   Evaluation = mongoose.model('Evaluation');
 
 exports.addMine = function(req, res) {
@@ -12,6 +13,7 @@ exports.addMine = function(req, res) {
   }
 
   req.body.finished = false;
+  req.body.lastEditEmail = req.email;
 
   const newEvaluation = new Evaluation(req.body);
   newEvaluation.save(function(err, evaluation) {
@@ -34,6 +36,8 @@ exports.updateMine = async function(req, res) {
 
   const ev = await Evaluation.findById(req.params.evaluationId);
   if (ev == null) return res.status(404).json({message: 'Evaluation id not found'});
+
+  req.body.lastEditEmail = req.email;
 
   if (ev.orgId.toString() === req.user.orgId.toString()) {
     Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: req.body}, function(err, evaluation) {
@@ -67,8 +71,29 @@ exports.validate = async function(req, res) {
   if (ev.orgId.toString() !== req.params.orgId)
     return res.status(404).json({message: 'Evaluation id not found for this organization'});
 
-  Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: true}}, function(err, evaluation) {
+  Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: true}}, async function(err, evaluation) {
     if (evaluation) {
+      const loginURL = req.protocol + '://' + req.hostname + ':3001' + '/login';
+      const message = {
+        to: evaluation.lastEditEmail,
+        from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
+        subject: 'A avaliação de sua organização foi validada',
+        text: `
+          A avaliação editada por você para a sua organização foi validada.
+          Para visualizá-la, acesse ` + loginURL + `.
+        `,
+        html: `
+          <p>
+            A avaliação editada por você para a sua organização foi <b>validada</b>.
+          </p>
+          <p>
+            Para visualizá-la, <a href=` + loginURL + `>acesse o sistema</a>. 
+          </p>
+        `
+      };
+
+      await email.sendMail(message);
+
       res.status(200).send({...evaluation._doc, validated: true});
     } else if (evaluation == null && err == null) { // Unlikely scenario because we found it before
       res.status(404).json({message: 'Evaluation id not found'});
@@ -116,8 +141,29 @@ exports.invalidate = async function(req, res) {
   if (ev.orgId.toString() !== req.params.orgId)
     return res.status(404).json({message: 'Evaluation id not found for this organization'});
 
-  Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: false}}, function(err, evaluation) {
+  Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: false}}, async function(err, evaluation) {
     if (evaluation) {
+      const loginURL = req.protocol + '://' + req.hostname + ':3001' + '/login';
+      const message = {
+        to: evaluation.lastEditEmail,
+        from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
+        subject: 'A avaliação de sua organização foi invalidada',
+        text: `
+          A avaliação editada por você para a sua organização foi invalidada.
+          Para visualizá-la, acesse ` + loginURL + `.
+        `,
+        html: `
+          <p>
+            A avaliação editada por você para a sua organização foi <b>invalidada</b>.
+          </p>
+          <p>
+            Para visualizá-la, <a href=` + loginURL + `>acesse o sistema</a>. 
+          </p>
+        `
+      };
+
+      await email.sendMail(message);
+
       res.status(200).send({...evaluation._doc, validated: false});
     } else if (evaluation == null && err == null) { // Unlikely scenario because we found it before
       res.status(404).json({message: 'Evaluation id not found'});
