@@ -73,21 +73,21 @@ exports.validate = async function(req, res) {
 
   Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: true}}, async function(err, evaluation) {
     if (evaluation) {
-      const evaluationURL = req.protocol + '://' + req.hostname + ':3001' + '/organization/mine/evaluation';
+      const loginURL = req.protocol + '://' + req.hostname + ':3001' + '/login';
       const message = {
         to: evaluation.lastEditEmail,
         from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
         subject: 'A avaliação de sua organização foi validada',
         text: `
           A avaliação editada por você para a sua organização foi validada.
-          Para visualizá-la, acesse ` + evaluationURL + `.
+          Para visualizá-la, acesse ` + loginURL + `.
         `,
         html: `
           <p>
             A avaliação editada por você para a sua organização foi <b>validada</b>.
           </p>
           <p>
-            Para visualizá-la, <a href=` + evaluationURL + `>acesse o sistema</a>. 
+            Para visualizá-la, <a href=` + loginURL + `>acesse o sistema</a>. 
           </p>
         `
       };
@@ -143,21 +143,21 @@ exports.invalidate = async function(req, res) {
 
   Evaluation.findByIdAndUpdate(req.params.evaluationId, {$set: {validated: false}}, async function(err, evaluation) {
     if (evaluation) {
-      const evaluationURL = req.protocol + '://' + req.hostname + ':3001' + '/organization/mine/evaluation';
+      const loginURL = req.protocol + '://' + req.hostname + ':3001' + '/login';
       const message = {
         to: evaluation.lastEditEmail,
         from: 'HIDS Sustentabilidade Corporativa <sustentabilidade.unicamp@gmail.com>',
         subject: 'A avaliação de sua organização foi invalidada',
         text: `
           A avaliação editada por você para a sua organização foi invalidada.
-          Para visualizá-la, acesse ` + evaluationURL + `.
+          Para visualizá-la, acesse ` + loginURL + `.
         `,
         html: `
           <p>
             A avaliação editada por você para a sua organização foi <b>invalidada</b>.
           </p>
           <p>
-            Para visualizá-la, <a href=` + evaluationURL + `>acesse o sistema</a>. 
+            Para visualizá-la, <a href=` + loginURL + `>acesse o sistema</a>. 
           </p>
         `
       };
