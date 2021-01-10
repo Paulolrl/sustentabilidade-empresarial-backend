@@ -127,7 +127,7 @@ module.exports = function(app) {
   var terms = require('../controllers/termsOfUseController');
   var auth = require('../auth/auth');
 
-  app.route('/term')
+  app.route('/terms')
     .get(terms.get)
     .put(auth.verifyToken, auth.verifyAdmin, terms.update);
 
