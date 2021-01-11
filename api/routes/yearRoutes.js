@@ -22,8 +22,8 @@
  * 
  *   post:
  *     tags: [Year]
- *     summary: Registers an year
- *     description: "Receives an year object and save it into the database. 
+ *     summary: Registers a year
+ *     description: "Receives a year object and save it into the database. 
  *                   Your authorization token must have admin access."
  *     requestBody:
  *       required: true
@@ -57,8 +57,8 @@
  *       description: The year id
  *   get:
  *     tags: [Year]
- *     summary: Gets an year by id
- *     description: "Gets an year object by its id from 
+ *     summary: Gets a year by id
+ *     description: "Gets a year object by its id from 
  *       inside the database."
  *     responses:
  *       200:
@@ -76,8 +76,8 @@
  * 
  *   put:
  *     tags: [Year]
- *     summary: Updates an year
- *     description: "Updates an year object by its id. 
+ *     summary: Updates a year
+ *     description: "Updates a year object by its id. 
  *       Your authorization token must have admin access."
  *     requestBody:
  *       required: true
@@ -106,7 +106,7 @@
  *   delete:
  *     tags: [Year]
  *     summary: Deletes a year by id
- *     description: "Deletes an year object by its id. 
+ *     description: "Deletes a year object by its id. 
  *       Your authorization token must have admin access."
  *     responses:
  *       200:

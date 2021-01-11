@@ -9,6 +9,8 @@ var Schema = mongoose.Schema;
  *     Criterion:
  *       type: object
  *       properties:
+ *         description:
+ *           type: string
  *         name:
  *           type: string
  *         weight:

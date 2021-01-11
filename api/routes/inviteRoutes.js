@@ -117,7 +117,7 @@
  *       500:
  *         description: Unable to get invite
  *
- * //invite/{inviteId}/accept:
+ * /invite/{inviteId}/accept:
  *   parameters:
  *     - in: path
  *       name: inviteId
