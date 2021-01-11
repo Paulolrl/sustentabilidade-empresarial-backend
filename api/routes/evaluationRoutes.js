@@ -14,7 +14,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#components/EvaluationMongo'
+ *               $ref: '#components/ListOfEvaluations'
  *       401:
  *         description: No authorization token provided or authentication failed
  *       404:
@@ -231,10 +231,11 @@
  *     description: "Validates an evaluation by its id from inside the database.
  *                   The evaluation must belong to the organization, which id must also be provided.
  *                   After the API call, this evaluation will have a validated status.
+ *                   Also, an email will be sent informing this outcome to the last user that create/updated the evaluation.
  *                   Your authorization token must have admin access."
  *     responses:
  *       200:
- *         description: The validated evaluation object matching the id
+ *         description: The now validated evaluation object matching the id
  *         content:
  *           application/json:
  *             schema:
@@ -269,11 +270,12 @@
  *     summary: Validates an organization's evaluation by id
  *     description: "Validates an evaluation by its id from inside the database.
  *                   The evaluation must belong to the organization, which id must also be provided.
- *                   After the API call, this evaluation will have a validated status.
+ *                   After the API call, this evaluation will have an invalidated status.
+ *                   Also, an email will be sent informing this outcome to the last user that create/updated the evaluation.
  *                   Your authorization token must have admin access."
  *     responses:
  *       200:
- *         description: The invalidated evaluation object matching the id
+ *         description: The now invalidated evaluation object matching the id
  *         content:
  *           application/json:
  *             schema:
@@ -285,20 +287,31 @@
  *       404:
  *         description: Organization or evaluation does not exist
  *       500:
- *         description: Unable to validate evaluation
+ *         description: Unable to invalidate evaluation
  *
  * /evaluation:
  *   get:
  *     tags: [Evaluation]
  *     summary: Gets all evaluations
  *     description: "Gets all evaluations from inside the database."
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: number
+ *         description: The page number
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: number
+ *         description: Number of results per page
  *     responses:
  *       200:
  *         description: List objects containing the evaluation id, the organization object, and evaluation's year
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#components/ListOfEvaluationsAll'
+ *               $ref: '#components/ListOfEvaluationsFiltered'
  *       401:
  *         description: No authorization token provided or authentication failed
  *       403:
