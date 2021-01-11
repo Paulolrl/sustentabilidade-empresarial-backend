@@ -11,6 +11,7 @@ var express = require('express'),
   Evaluation = require('./api/models/evaluationModel'),
   Invite = require('./api/models/inviteModel'),
   Year = require('./api/models/yearModel'),
+  TermsOfUse = require('./api/models/termsOfUseModel'),
   bodyParser = require('body-parser'),
   cors = require('cors'),
   fs = require('fs'),
@@ -56,6 +57,9 @@ var routes = require('./api/routes/inviteRoutes'); //importing route
 routes(app);
 
 var routes = require('./api/routes/yearRoutes'); //importing route
+routes(app);
+
+var routes = require('./api/routes/termsOfUseRoutes'); //importing route
 routes(app);
 
 const specs = swaggerJsdoc(swagger_options);
