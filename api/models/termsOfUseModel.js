@@ -6,25 +6,18 @@ var Schema = mongoose.Schema;
  * @swagger
  * components:
  *   schemas:
- *     Year:
+ *     TermsOfUse:
  *       type: object
  *       properties:
- *         year:
- *           type: number
- *   YearMongo:
+ *         url:
+ *           type: string
+ *   TermsOfUseMongo:
  *     allOf:
- *       - $ref: '#/components/schemas/Year'
+ *       - $ref: '#/components/schemas/TermsOfUse'
  *       - type: object
  *         properties:
  *           _id:
  *             type: string
- *           __v:
- *             type: number
- *
- *   ListOfYears:
- *     type: array
- *     items:
- *       $ref: '#/components/YearMongo'
  */
 var TermsOfUseSchema = new Schema(
   {
