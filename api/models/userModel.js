@@ -33,9 +33,18 @@ const Schema = mongoose.Schema;
  *             type: boolean
  *
  *   ListOfUsers:
- *     type: array
- *     items:
- *       $ref: '#/components/UserMongo'
+ *     type: object
+ *     properties:
+ *       total:
+ *         type: number
+ *       page:
+ *         type: number
+ *       pageSize:
+ *         type: number
+ *       results:
+ *         type: array
+ *         items:
+ *           $ref: '#/components/UserMongo'
  */
 const UserSchema = new Schema(
   {

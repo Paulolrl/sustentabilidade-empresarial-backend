@@ -5,13 +5,8 @@ module.exports = {
          title: "API Sustentabilidade Empresarial",
          version: "1.0.0",
          description: "Sustentabilidade Empresarial server API built with Swagger",
-         license: {
-            name: "MIT",
-            url: "https://spdx.org/licenses/MIT.html"
-         },
          contact: {
             name: "Sustentabilidade Empresarial",
-            url: "https://sustentabilidade.com",
             email: "sustentabilidade.unicamp@gmail.com"
          }
       },
@@ -28,7 +23,7 @@ module.exports = {
       }],
       servers: [
          {
-            url: "http://localhost:3000/"
+            url: "http://143.106.73.67:3000/"
          }
       ]
    },

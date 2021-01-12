@@ -35,9 +35,18 @@ var Schema = mongoose.Schema;
  *             type: number
  *
  *   ListOfOrgs:
- *     type: array
- *     items:
- *       $ref: '#/components/OrganizationMongo'
+ *     type: object
+ *     properties:
+ *       total:
+ *         type: number
+ *       page:
+ *         type: number
+ *       pageSize:
+ *         type: number
+ *       results:
+ *         type: array
+ *         items:
+ *           $ref: '#/components/OrganizationMongo'
  */
 var OrganizationsSchema = new Schema(
   {

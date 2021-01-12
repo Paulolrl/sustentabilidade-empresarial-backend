@@ -53,7 +53,11 @@
  *             type: string
  *           __v:
  *             type: number
+ *           lastEditEmail:
+ *             type: string
  *           validated:
+ *             type: boolean
+ *           finished:
  *             type: boolean
  *           orgId:
  *             type: string
@@ -85,6 +89,20 @@
  *     type: array
  *     items:
  *       $ref: '#/components/EvaluationMongo'
+ * 
+ *   ListOfEvaluationsFiltered:
+ *     type: object
+ *     properties:
+ *       total:
+ *         type: number
+ *       page:
+ *         type: number
+ *       pageSize:
+ *         type: number
+ *       results:
+ *         type: array
+ *         items:
+ *           $ref: '#/components/ListOfEvaluationsAll'
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;

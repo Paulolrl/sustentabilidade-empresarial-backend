@@ -206,7 +206,7 @@
  *   put:
  *     tags: [User]
  *     summary: Grants admin privileges to an user
- *     description: "Search user by its id and grant them admin privileges.
+ *     description: "Searches user by its id and grants them admin privileges.
  *       Your authorization token must have admin access."
  *     responses:
  *       200:
@@ -235,7 +235,7 @@
  *   put:
  *     tags: [User]
  *     summary: Revokes admin privileges to an user
- *     description: "Search user by its id and grant them admin privileges.
+ *     description: "Searches user by its id and grants them admin privileges.
  *       Your authorization token must have admin access."
  *     responses:
  *       200:
